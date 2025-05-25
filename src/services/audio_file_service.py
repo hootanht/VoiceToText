@@ -7,8 +7,8 @@ import os
 import glob
 from typing import List
 from pathlib import Path
-from ..interfaces import IAudioFileService, IConfigurationService
-from ..models import AudioFile
+from src.interfaces import IAudioFileService, IConfigurationService
+from src.models import AudioFile
 
 
 class AudioFileService(IAudioFileService):

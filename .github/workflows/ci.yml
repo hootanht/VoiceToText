@@ -14,14 +14,12 @@ env:
 jobs:
   lint:
     name: Code Quality & Linting
-    runs-on: ubuntu-latest
-
-    steps:
+    runs-on: ubuntu-latest    steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -217,14 +215,12 @@ jobs:
 
       - name: Build distribution
         run: |
-          python -m build
-
-      - name: Check distribution
+          python -m build      - name: Check distribution
         run: |
           python -m twine check dist/*
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dist
           path: dist/
@@ -255,10 +251,8 @@ jobs:
       - name: Run Bandit (Security Linting)
         run: |
           bandit -r src/ -f json -o bandit-report.json || true
-          bandit -r src/
-
-      - name: Upload security scan results
-        uses: actions/upload-artifact@v3
+          bandit -r src/      - name: Upload security scan results
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: security-scan-results
@@ -330,10 +324,8 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/checkout@v4      - name: Download build artifacts
+        uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist/

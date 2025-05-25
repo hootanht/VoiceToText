@@ -7,8 +7,8 @@ import os
 from datetime import datetime
 from pathlib import Path
 from typing import List
-from ..interfaces import IReportGenerator
-from ..models import AnalysisResult
+from src.interfaces import IReportGenerator
+from src.models import AnalysisResult
 
 
 class MarkdownReportGenerator(IReportGenerator):

@@ -3,7 +3,7 @@ Prompt Provider Service
 سرویس ارائه‌دهنده پرامت
 """
 
-from ..interfaces import IPromptProvider
+from src.interfaces import IPromptProvider
 
 
 class PersianPromptProvider(IPromptProvider):

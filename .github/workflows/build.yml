@@ -158,10 +158,8 @@ jobs:
         run: |
           echo "Build completed successfully on $(date)" > dist/build-info.txt
           echo "Python version: $(python --version)" >> dist/build-info.txt
-          echo "Commit: ${{ github.sha }}" >> dist/build-info.txt
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+          echo "Commit: ${{ github.sha }}" >> dist/build-info.txt      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
         with:
           name: build-info
           path: dist/build-info.txt

@@ -5,8 +5,8 @@ Interfaces for the Voice to Text Analyzer
 
 from abc import ABC, abstractmethod
 from typing import List, Optional
-from ..models.audio_file import AudioFile
-from ..models.analysis_result import AnalysisResult
+from src.models.audio_file import AudioFile
+from src.models.analysis_result import AnalysisResult
 
 
 class IAudioFileService(ABC):

@@ -5,8 +5,8 @@ Voice to Text Application
 
 import os
 from typing import List, Optional
-from .interfaces import IAudioFileService, IAIAnalyzer, IReportGenerator, IConfigurationService
-from .models import AudioFile, AnalysisResult
+from src.interfaces import IAudioFileService, IAIAnalyzer, IReportGenerator, IConfigurationService
+from src.models import AudioFile, AnalysisResult
 
 
 class VoiceToTextApplication:

@@ -18,8 +18,10 @@ class GeminiAnalyzer(IAIAnalyzer):
             # Legacy constructor: GeminiAnalyzer(api_key, model_name)
             from src.services.configuration_service import ConfigurationService
             from src.services.prompt_provider import PromptProvider
+
             self._config_service = ConfigurationService(
-                api_key=config_service, model_name=prompt_provider)
+                api_key=config_service, model_name=prompt_provider
+            )
             self._prompt_provider = PromptProvider()
         else:
             # New constructor: GeminiAnalyzer(config_service, prompt_provider)
@@ -36,10 +38,11 @@ class GeminiAnalyzer(IAIAnalyzer):
             genai.configure(api_key=api_key)
             self._client = genai
         except Exception as e:
-            raise ConnectionError(
-                f"Failed to initialize Gemini client: {str(e)}")
+            raise ConnectionError(f"Failed to initialize Gemini client: {str(e)}")
 
-    def analyze_audio(self, audio_file: AudioFile, language: str = None) -> AnalysisResult:
+    def analyze_audio(
+        self, audio_file: AudioFile, language: str = None
+    ) -> AnalysisResult:
         """Analyze an audio file and return the result
 
         Args:
@@ -66,7 +69,7 @@ class GeminiAnalyzer(IAIAnalyzer):
                 audio_file=audio_file,
                 analysis_text=analysis_text,
                 success=True,
-                processing_time=processing_time
+                processing_time=processing_time,
             )
 
         except Exception as e:
@@ -78,7 +81,7 @@ class GeminiAnalyzer(IAIAnalyzer):
                 analysis_text="",
                 success=False,
                 error_message=error_message,
-                processing_time=processing_time
+                processing_time=processing_time,
             )
 
     def _upload_file(self, audio_file: AudioFile):
@@ -87,7 +90,8 @@ class GeminiAnalyzer(IAIAnalyzer):
             return self._client.upload_file(audio_file.file_path)
         except Exception as e:
             raise RuntimeError(
-                f"Failed to upload file {audio_file.file_name}: {str(e)}")
+                f"Failed to upload file {audio_file.file_name}: {str(e)}"
+            )
 
     def _generate_analysis(self, uploaded_file) -> str:
         """Generate analysis using Gemini"""

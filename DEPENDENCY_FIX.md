@@ -42,7 +42,26 @@ safety>=2.0.0
 bandit>=1.7.0
 ```
 
-### 4. **Streamlined GitHub Actions**
+### 4. **Fixed F-String Syntax Error**
+**Problem:** Python syntax error in `src/services/report_generator.py` line 141
+```
+SyntaxError: f-string expression part cannot include a backslash
+```
+
+**Root Cause:** F-strings cannot contain backslashes (`\`) in expression parts `{}`
+
+**Fix Applied:**
+```diff
+- {"```\n" + result.analysis_text + "\n```" if result.success else "```\nخطا در تحلیل فایل:\n" + result.error + "\n```"}
++ # Handle content section separately to avoid backslash issues
++ if result.success:
++     content_section = "```\n" + result.analysis_text + "\n```"  
++ else:
++     content_section = "```\nخطا در تحلیل فایل:\n" + error_msg + "\n```"
++ {content_section}
+```
+
+### 5. **Streamlined GitHub Actions**
 **Enhancement:** Updated CI workflows to use dependencies from requirements.txt instead of installing them separately
 
 **Changes:**
@@ -74,7 +93,8 @@ import google.generativeai as genai  # ✅ Works
 ## Files Changed
 
 - `requirements.txt` - Fixed package name and added missing dependencies
-- `.github/workflows/ci.yml` - Streamlined security tool installation
+- `.github/workflows/ci.yml` - Streamlined security tool installation  
+- `src/services/report_generator.py` - Fixed f-string syntax error
 - `DEPENDENCY_FIX.md` - This documentation
 
 ## Next Steps

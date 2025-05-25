@@ -27,14 +27,16 @@ class MarkdownReportGenerator(IReportGenerator):
         markdown_content = self._generate_analysis_markdown(result)
 
         # Save the file
-        with open(output_file, 'w', encoding='utf-8') as f:
+        with open(output_file, "w", encoding="utf-8") as f:
             f.write(markdown_content)
 
         result.output_file_path = output_file
         print(f"نتیجه ذخیره شد در: {output_file}")
         return output_file
 
-    def create_summary_report(self, results: List[AnalysisResult], output_folder: str) -> str:
+    def create_summary_report(
+        self, results: List[AnalysisResult], output_folder: str
+    ) -> str:
         """Create a summary report of all results in Markdown format"""
         summary_file = os.path.join(output_folder, "summary_report.md")
 
@@ -45,11 +47,11 @@ class MarkdownReportGenerator(IReportGenerator):
         if not results:
             markdown_content = markdown_content.replace(
                 "هیچ فایلی برای پردازش یافت نشد.",
-                "No files found for processing. / هیچ فایلی برای پردازش یافت نشد."
+                "No files found for processing. / هیچ فایلی برای پردازش یافت نشد.",
             )
 
         # Save the summary file
-        with open(summary_file, 'w', encoding='utf-8') as f:
+        with open(summary_file, "w", encoding="utf-8") as f:
             f.write(markdown_content)
 
         print(f"گزارش خلاصه ذخیره شد: {summary_file}")
@@ -66,7 +68,7 @@ class MarkdownReportGenerator(IReportGenerator):
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
 
         # Save the file
-        with open(filepath, 'w', encoding='utf-8') as f:
+        with open(filepath, "w", encoding="utf-8") as f:
             f.write(content)
 
         print(f"گزارش ذخیره شد در: {filepath}")
@@ -79,8 +81,7 @@ class MarkdownReportGenerator(IReportGenerator):
         failed_files = total_files - successful_files
         total_time = sum(r.processing_time for r in results) if results else 0
         avg_time = total_time / total_files if total_files > 0 else 0
-        success_rate = (successful_files / total_files *
-                        100) if total_files > 0 else 0
+        success_rate = (successful_files / total_files * 100) if total_files > 0 else 0
 
         # Generate markdown
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -118,6 +119,13 @@ class MarkdownReportGenerator(IReportGenerator):
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         success_mark = "✅" if result.success else "❌"
 
+        # Handle the content section separately to avoid backslash issues in f-strings
+        if result.success:
+            content_section = "```\n" + result.analysis_text + "\n```"
+        else:
+            error_msg = getattr(result, "error_message", "خطای نامشخص")
+            content_section = "```\nخطا در تحلیل فایل:\n" + error_msg + "\n```"
+
         markdown = f"""# گزارش تحلیل فایل صوتی {result.audio_file.file_name}
 
 **تاریخ تحلیل:** {now}
@@ -133,7 +141,7 @@ class MarkdownReportGenerator(IReportGenerator):
 - **زمان پردازش:** {result.processing_time:.2f} ثانیه
 
 ## متن استخراج شده
-{"```\n" + result.analysis_text + "\n```" if result.success else "```\nخطا در تحلیل فایل:\n" + result.error + "\n```"}
+{content_section}
 
 ---
 

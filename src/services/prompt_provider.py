@@ -8,7 +8,7 @@ from src.interfaces import IPromptProvider
 
 class PromptProvider(IPromptProvider):
     """Default Prompt Provider (alias for PersianPromptProvider)"""
-    
+
     def get_analysis_prompt(self) -> str:
         """Get the analysis prompt"""
         return PersianPromptProvider().get_analysis_prompt()
@@ -16,7 +16,7 @@ class PromptProvider(IPromptProvider):
 
 class PersianPromptProvider(IPromptProvider):
     """Provides Persian prompts for audio analysis"""
-    
+
     def get_analysis_prompt(self) -> str:
         """Get the Persian analysis prompt"""
         return """
@@ -52,7 +52,7 @@ At the end, provide a summary of what happened, what the problem was, and whethe
 
 class EnglishPromptProvider(IPromptProvider):
     """Provides English prompts for audio analysis"""
-    
+
     def get_analysis_prompt(self) -> str:
         """Get the English analysis prompt"""
         return """

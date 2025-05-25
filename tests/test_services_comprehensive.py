@@ -14,7 +14,7 @@ from pathlib import Path
 from unittest.mock import patch, MagicMock, mock_open
 
 # Add src to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 try:
     from services.audio_file_service import AudioFileService
@@ -29,7 +29,10 @@ except ImportError:
     sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
     from src.services.audio_file_service import AudioFileService
     from src.services.gemini_analyzer import GeminiAnalyzer
-    from src.services.prompt_provider import PersianPromptProvider, EnglishPromptProvider
+    from src.services.prompt_provider import (
+        PersianPromptProvider,
+        EnglishPromptProvider,
+    )
     from src.services.report_generator import MarkdownReportGenerator
     from src.services.configuration_service import ConfigurationService
     from src.models.audio_file import AudioFile
@@ -42,6 +45,7 @@ class TestAudioFileServiceComprehensive(unittest.TestCase):
     def setUp(self):
         """Set up test fixtures"""
         from src.services.configuration_service import ConfigurationService
+
         config_service = ConfigurationService()
         self.service = AudioFileService(config_service)
 
@@ -124,9 +128,9 @@ class TestAudioFileServiceComprehensive(unittest.TestCase):
             file_info = self.service.get_file_info(temp_file.name)
 
             self.assertIsInstance(file_info, dict)
-            self.assertEqual(file_info['path'], temp_file.name)
-            self.assertEqual(file_info['format'], "mp3")
-            self.assertEqual(file_info['size'], len(test_content))
+            self.assertEqual(file_info["path"], temp_file.name)
+            self.assertEqual(file_info["format"], "mp3")
+            self.assertEqual(file_info["size"], len(test_content))
         finally:
             try:
                 os.unlink(temp_file.name)
@@ -144,14 +148,14 @@ class TestAudioFileServiceComprehensive(unittest.TestCase):
         self.assertEqual(path_obj.stem, "audio")
         self.assertEqual(path_obj.name, "audio.mp3")
         # Test parent operations - Handle Windows/Unix path differences
-        expected_parent = "test\\path" if os.name == 'nt' else "test/path"
+        expected_parent = "test\\path" if os.name == "nt" else "test/path"
         self.assertEqual(str(path_obj.parent), expected_parent)
 
 
 class TestGeminiAnalyzerComprehensive(unittest.TestCase):
     """Comprehensive tests for GeminiAnalyzer"""
 
-    @patch('src.services.gemini_analyzer.genai')
+    @patch("src.services.gemini_analyzer.genai")
     def setUp(self, mock_genai):
         """Set up test fixtures"""
         # Mock the client initialization to avoid API calls during tests
@@ -161,7 +165,7 @@ class TestGeminiAnalyzerComprehensive(unittest.TestCase):
     def test_analyze_audio_success(self):
         """Test successful audio analysis"""
         # Mock the Gemini API response completely
-        with patch.object(self.analyzer, '_client') as mock_client:
+        with patch.object(self.analyzer, "_client") as mock_client:
             # Mock upload_file
             mock_uploaded_file = MagicMock()
             mock_client.upload_file.return_value = mock_uploaded_file
@@ -181,16 +185,16 @@ class TestGeminiAnalyzerComprehensive(unittest.TestCase):
 
             # Check using the exact type from src.models
             from src.models.analysis_result import AnalysisResult as SrcAnalysisResult
+
             self.assertIsInstance(result, SrcAnalysisResult)
-            self.assertEqual(result.analysis_text,
-                             "This is a test transcription")
+            self.assertEqual(result.analysis_text, "This is a test transcription")
             self.assertTrue(result.success)
             self.assertGreater(result.processing_time, 0)
 
     def test_analyze_audio_api_error(self):
         """Test audio analysis with API error"""
         # Mock the client to raise an exception during upload
-        with patch.object(self.analyzer, '_client') as mock_client:
+        with patch.object(self.analyzer, "_client") as mock_client:
             mock_client.upload_file.side_effect = Exception("API Error")
 
             test_file = AudioFile("test.mp3", "mp3", 1024)
@@ -200,12 +204,14 @@ class TestGeminiAnalyzerComprehensive(unittest.TestCase):
 
             # Check using the exact type from src.models
             from src.models.analysis_result import AnalysisResult as SrcAnalysisResult
+
             self.assertIsInstance(result, SrcAnalysisResult)
             self.assertFalse(result.success)
             self.assertIn("API Error", result.error_message)
 
     def test_python38_exception_handling(self):
         """Test Python 3.8 exception handling patterns"""
+
         def function_with_chained_exception():
             try:
                 # Simulate an operation that fails
@@ -261,8 +267,7 @@ class TestPromptProviderComprehensive(unittest.TestCase):
         # Should contain analysis-related keywords
         prompt_lower = prompt.lower()
         analysis_keywords = ["analyze", "analysis", "summary", "content"]
-        self.assertTrue(
-            any(keyword in prompt_lower for keyword in analysis_keywords))
+        self.assertTrue(any(keyword in prompt_lower for keyword in analysis_keywords))
 
     def test_python38_string_formatting(self):
         """Test Python 3.8 string formatting features"""
@@ -292,16 +297,15 @@ class TestReportGeneratorComprehensive(unittest.TestCase):
         result = AnalysisResult(
             audio_file=audio_file,
             analysis_text="This is a test transcription",
-            processing_time=2.5
+            processing_time=2.5,
         )
 
         # Mock the method that doesn't exist
-        if not hasattr(self.generator, 'generate_analysis_report'):
+        if not hasattr(self.generator, "generate_analysis_report"):
             # Use the existing method instead
             report = self.generator._generate_analysis_markdown(result)
         else:
-            report = self.generator.generate_analysis_report(
-                result, audio_file)
+            report = self.generator.generate_analysis_report(result, audio_file)
 
         self.assertIsInstance(report, str)
         self.assertGreater(len(report), 0)
@@ -318,7 +322,7 @@ class TestReportGeneratorComprehensive(unittest.TestCase):
             result = AnalysisResult(
                 audio_file=audio_file,
                 analysis_text=f"Transcription {i+1}",
-                processing_time=1.0 + i
+                processing_time=1.0 + i,
             )
             results.append(result)
 
@@ -353,7 +357,7 @@ class TestReportGeneratorComprehensive(unittest.TestCase):
         # Verify makedirs was called for directory creation
         mock_makedirs.assert_called_once()
         # Verify file was opened and written
-        mock_file.assert_called_once_with(test_filepath, 'w', encoding='utf-8')
+        mock_file.assert_called_once_with(test_filepath, "w", encoding="utf-8")
         mock_file().write.assert_called_once_with(test_content)
 
     def test_python38_walrus_operator_simulation(self):
@@ -361,7 +365,7 @@ class TestReportGeneratorComprehensive(unittest.TestCase):
         audio_files = [
             AudioFile("test1.mp3", "mp3", 1024),
             AudioFile("test2.mp3", "mp3", 1024),
-            AudioFile("test3.mp3", "mp3", 1024)
+            AudioFile("test3.mp3", "mp3", 1024),
         ]
 
         test_results = [
@@ -403,8 +407,7 @@ class TestPython38IntegrationFeatures(unittest.TestCase):
         from typing import List, Optional, Dict, Any
 
         def process_audio_files(
-            files: List[AudioFile],
-            config: Optional[Dict[str, Any]] = None
+            files: List[AudioFile], config: Optional[Dict[str, Any]] = None
         ) -> List[AnalysisResult]:
             """Test function with Python 3.8+ type hints"""
             results = []
@@ -413,7 +416,7 @@ class TestPython38IntegrationFeatures(unittest.TestCase):
                 result = AnalysisResult(
                     audio_file=file,
                     analysis_text=f"Processed {file.file_path}",
-                    processing_time=1.0
+                    processing_time=1.0,
                 )
                 results.append(result)
             return results
@@ -421,7 +424,7 @@ class TestPython38IntegrationFeatures(unittest.TestCase):
         # Test the function
         test_files = [
             AudioFile("test1.mp3", "mp3", 1024),
-            AudioFile("test2.wav", "wav", 2048)
+            AudioFile("test2.wav", "wav", 2048),
         ]
 
         results = process_audio_files(test_files)
@@ -474,6 +477,6 @@ class TestPython38IntegrationFeatures(unittest.TestCase):
         self.assertFalse(processor.is_processing)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Run tests with maximum verbosity
     unittest.main(verbosity=2, buffer=True)

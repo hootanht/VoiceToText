@@ -11,7 +11,7 @@ from .services import (
     EnglishPromptProvider,
     AudioFileService,
     GeminiAnalyzer,
-    MarkdownReportGenerator
+    MarkdownReportGenerator,
 )
 
 __version__ = "2.0.0"
@@ -19,13 +19,13 @@ __author__ = "Voice to Text Analyzer"
 __description__ = "A modular voice to text analyzer using Gemini AI"
 
 __all__ = [
-    'VoiceToTextApplication',
-    'AudioFile',
-    'AnalysisResult',
-    'ConfigurationService',
-    'PersianPromptProvider',
-    'EnglishPromptProvider', 
-    'AudioFileService',
-    'GeminiAnalyzer',
-    'MarkdownReportGenerator'
+    "VoiceToTextApplication",
+    "AudioFile",
+    "AnalysisResult",
+    "ConfigurationService",
+    "PersianPromptProvider",
+    "EnglishPromptProvider",
+    "AudioFileService",
+    "GeminiAnalyzer",
+    "MarkdownReportGenerator",
 ]

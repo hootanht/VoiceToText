@@ -9,7 +9,7 @@ import os
 from unittest.mock import patch, MagicMock
 
 # Add src to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 try:
     from services.configuration_service import ConfigurationService
@@ -25,17 +25,19 @@ class TestConfigurationService(unittest.TestCase):
     def setUp(self):
         """Set up test fixtures before each test method."""
         # Test with explicit parameters to avoid env dependency
-        self.service = ConfigurationService(
-            api_key="test_key", model_name="test_model")
+        self.service = ConfigurationService(api_key="test_key", model_name="test_model")
 
     def test_initialization_with_explicit_params(self):
         """Test service initialization with explicit parameters"""
         service = ConfigurationService(
-            api_key="explicit_key", model_name="explicit_model")
+            api_key="explicit_key", model_name="explicit_model"
+        )
         self.assertEqual(service.get_api_key(), "explicit_key")
         self.assertEqual(service.get_model_name(), "explicit_model")
 
-    @patch.dict(os.environ, {'GEMINI_API_KEY': 'env_key', 'GEMINI_MODEL_NAME': 'env_model'})
+    @patch.dict(
+        os.environ, {"GEMINI_API_KEY": "env_key", "GEMINI_MODEL_NAME": "env_model"}
+    )
     def test_initialization_with_env_vars(self):
         """Test service initialization with environment variables"""
         service = ConfigurationService()
@@ -48,8 +50,7 @@ class TestConfigurationService(unittest.TestCase):
         service = ConfigurationService()
         # Should be None if no env var
         self.assertIsNone(service.get_api_key())
-        self.assertEqual(service.get_model_name(),
-                         "gemini-2.0-flash")  # Default value
+        self.assertEqual(service.get_model_name(), "gemini-2.0-flash")  # Default value
 
     def test_get_api_key(self):
         """Test API key retrieval"""
@@ -70,12 +71,12 @@ class TestConfigurationService(unittest.TestCase):
         extensions = self.service.get_supported_extensions()
         self.assertIsInstance(extensions, list)
         self.assertGreater(len(extensions), 0)
-        self.assertIn('mp3', extensions)
-        self.assertIn('wav', extensions)
-        self.assertIn('aiff', extensions)
-        self.assertIn('aac', extensions)
-        self.assertIn('ogg', extensions)
-        self.assertIn('flac', extensions)
+        self.assertIn("mp3", extensions)
+        self.assertIn("wav", extensions)
+        self.assertIn("aiff", extensions)
+        self.assertIn("aac", extensions)
+        self.assertIn("ogg", extensions)
+        self.assertIn("flac", extensions)
 
     def test_supported_extensions_immutability(self):
         """Test that supported extensions returns a copy (immutable)"""
@@ -87,9 +88,9 @@ class TestConfigurationService(unittest.TestCase):
         self.assertEqual(extensions1, extensions2)
 
         # Modifying one shouldn't affect the other
-        extensions1.append('test_extension')
+        extensions1.append("test_extension")
         extensions3 = self.service.get_supported_extensions()
-        self.assertNotIn('test_extension', extensions3)
+        self.assertNotIn("test_extension", extensions3)
 
     def test_set_api_key(self):
         """Test API key setting"""
@@ -147,8 +148,7 @@ class TestConfigurationService(unittest.TestCase):
     def test_python38_walrus_operator_compatibility(self):
         """Test walrus operator usage in configuration (Python 3.8 feature)"""
         # Test walrus operator with configuration values
-        config = ConfigurationService(
-            api_key="test_key", model_name="test_model")
+        config = ConfigurationService(api_key="test_key", model_name="test_model")
 
         # Use walrus operator to check and assign API key
         if (api_key := config.get_api_key()) and len(api_key) > 0:
@@ -163,11 +163,7 @@ class TestConfigurationService(unittest.TestCase):
 
         def create_config(api_key, /, *, model_name="default_model", timeout=30):
             """Function using positional-only parameter"""
-            return {
-                "api_key": api_key,
-                "model_name": model_name,
-                "timeout": timeout
-            }
+            return {"api_key": api_key, "model_name": model_name, "timeout": timeout}
 
         # Test positional-only parameter
         config = create_config("test_key", model_name="custom_model")
@@ -201,7 +197,10 @@ class TestConfigurationService(unittest.TestCase):
 
         # Test Literal type (Python 3.8+)
         try:
-            def get_supported_language(lang: Literal["persian", "english", "arabic"]) -> str:
+
+            def get_supported_language(
+                lang: Literal["persian", "english", "arabic"],
+            ) -> str:
                 return f"Language: {lang}"
 
             result = get_supported_language("persian")
@@ -212,16 +211,15 @@ class TestConfigurationService(unittest.TestCase):
     def test_interface_compliance(self):
         """Test that the service implements all required interface methods"""
         # Check that all interface methods exist and are callable
-        self.assertTrue(hasattr(self.service, 'get_api_key'))
-        self.assertTrue(callable(getattr(self.service, 'get_api_key')))
+        self.assertTrue(hasattr(self.service, "get_api_key"))
+        self.assertTrue(callable(getattr(self.service, "get_api_key")))
 
-        self.assertTrue(hasattr(self.service, 'get_model_name'))
-        self.assertTrue(callable(getattr(self.service, 'get_model_name')))
+        self.assertTrue(hasattr(self.service, "get_model_name"))
+        self.assertTrue(callable(getattr(self.service, "get_model_name")))
 
-        self.assertTrue(hasattr(self.service, 'get_supported_extensions'))
-        self.assertTrue(
-            callable(getattr(self.service, 'get_supported_extensions')))
+        self.assertTrue(hasattr(self.service, "get_supported_extensions"))
+        self.assertTrue(callable(getattr(self.service, "get_supported_extensions")))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

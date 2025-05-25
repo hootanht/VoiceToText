@@ -798,6 +798,7 @@ If issues persist:
 - Write **comprehensive tests**
 - Document **public APIs**
 - Follow **PEP 8** style guide
+- Apply **Black code formatting** (see [FORMATTING.md](FORMATTING.md))
 
 ### Areas for Contribution
 

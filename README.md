@@ -1,0 +1,620 @@
+# 🎤 Voice to Text Analyzer
+
+An advanced modular AI-powered audio analysis system built with Google Gemini API that converts audio files to text and provides comprehensive analysis reports in Markdown format.
+
+## � Table of Contents
+
+- [🎯 Overview](#-overview)
+- [✨ Features](#-features)
+- [🏗️ Architecture](#-architecture)
+- [📋 Prerequisites](#-prerequisites)
+- [🚀 Installation](#-installation)
+- [🎮 Usage](#-usage)
+- [📁 Project Structure](#-project-structure)
+- [📖 API Documentation](#-api-documentation)
+- [📊 Sample Output](#-sample-output)
+- [🔧 Troubleshooting](#-troubleshooting)
+- [🤝 Contributing](#-contributing)
+
+---
+
+## 🎯 Overview
+
+### What is Voice to Text Analyzer?
+
+Voice to Text Analyzer is an intelligent audio processing system that:
+
+1. **Reads audio files** from the `assets/voice/` directory
+2. **Sends them to Google Gemini AI** for processing
+3. **Extracts complete conversation transcripts**
+4. **Performs minute-by-minute analysis**
+5. **Generates beautiful Markdown reports**
+6. **Creates comprehensive summaries** with statistics
+
+### Key Capabilities
+
+- 🎧 **Audio Processing**: Convert conversations to text (optimized for Persian/Farsi)
+- 📊 **Content Analysis**: Understand topics, issues, and solutions
+- ⏰ **Timeline Analysis**: Minute-by-minute conversation breakdown
+- 📝 **Report Generation**: Professional Markdown files with rich formatting
+- 📈 **Statistics**: Success rates, processing times, file sizes
+
+### Use Cases
+
+- **Customer Support**: Analyze support call conversations
+- **Education**: Review lectures and conference recordings
+- **Legal**: Analyze court proceedings and legal consultations
+- **Research**: Analyze interviews and focus group discussions
+- **Business**: Meeting transcription and analysis
+
+---
+
+## ✨ Features
+
+### 🎯 Core Features
+- ✅ **Multiple Format Support**: MP3, WAV, AIFF, AAC, OGG, FLAC
+- ✅ **Advanced AI**: Google Gemini 2.0 Flash integration
+- ✅ **Persian Language Optimized**: Native Farsi prompt engineering
+- ✅ **Markdown Output**: Beautiful, readable reports with tables and formatting
+- ✅ **Batch Processing**: Process multiple files simultaneously
+- ✅ **Summary Reports**: Aggregate statistics and insights
+
+### 🏗️ Technical Features
+- ✅ **Modular Architecture**: Clean separation of concerns
+- ✅ **SOLID Principles**: Maintainable and extensible design
+- ✅ **Dependency Injection**: Factory pattern implementation
+- ✅ **Error Handling**: Comprehensive error management and recovery
+- ✅ **Interface-Based Design**: Protocol-oriented programming
+- ✅ **Performance Tracking**: Processing time monitoring
+
+### 🎨 User Experience
+- ✅ **One-Click Execution**: Simple batch file execution
+- ✅ **Progress Tracking**: Real-time processing status
+- ✅ **Error Recovery**: Continue processing on individual file failures
+- ✅ **Rich Output**: Emoji-enhanced, formatted console output
+
+---
+
+## 🏗️ Architecture
+
+### SOLID Principles Implementation
+
+#### 🔹 Single Responsibility Principle (SRP)
+Each class has one specific responsibility:
+- `ConfigurationService` → Manages API configuration
+- `AudioFileService` → Handles audio file operations
+- `GeminiAnalyzer` → AI analysis processing
+- `MarkdownReportGenerator` → Report generation
+- `PersianPromptProvider` → Persian language prompts
+
+#### 🔹 Open/Closed Principle (OCP)
+System is open for extension, closed for modification:
+- Add new analyzers without changing existing code
+- Support new report formats seamlessly
+- Add new languages without core changes
+
+#### 🔹 Liskov Substitution Principle (LSP)
+All services are interchangeable through common interfaces:
+- All analyzers implement `IAIAnalyzer`
+- All report generators follow `IReportGenerator`
+
+#### 🔹 Interface Segregation Principle (ISP)
+Small, focused interfaces:
+- `IAudioFileService` → Only file operations
+- `IAIAnalyzer` → Only AI analysis
+- `IReportGenerator` → Only report generation
+
+#### 🔹 Dependency Inversion Principle (DIP)
+Classes depend on interfaces, not concrete implementations:
+- `ApplicationFactory` injects all dependencies
+- High-level modules depend on abstractions
+
+### Design Patterns
+
+#### 🏭 Factory Pattern
+```python
+app = ApplicationFactory.create_persian_application(api_key)
+```
+
+#### 🎯 Strategy Pattern
+```python
+# Language selection
+prompt_provider = PersianPromptProvider()  # or EnglishPromptProvider()
+```
+
+#### 📦 Repository Pattern
+```python
+audio_service.find_audio_files(folder_path)
+```
+
+#### 📡 Observer Pattern
+```python
+# Progress reporting during processing
+print(f"📊 Processing file {index}/{total}")
+```
+
+---
+
+## 📋 Prerequisites
+
+### Operating System
+- ✅ **Windows 10/11** (tested)
+- ✅ **macOS** (compatible)
+- ✅ **Linux** (compatible)
+
+### Software Requirements
+- ✅ **Python 3.8+** (recommended: Python 3.10+)
+- ✅ **pip** (Python package manager)
+- ✅ **Internet connection** (for Gemini API)
+
+### API Requirements
+- ✅ **Google Gemini API Key**
+  - Get from: [Google AI Studio](https://aistudio.google.com/)
+  - Free tier available with limits
+
+### Audio Files
+- ✅ **Supported formats**: MP3, WAV, AIFF, AAC, OGG, FLAC
+- ✅ **Quality**: Minimum 16kHz sampling rate
+- ✅ **Language**: Optimized for Persian/Farsi (English supported)
+
+---
+
+## 🚀 Installation
+
+### Step 1: Download Project
+```bash
+# Download or copy the project folder
+cd "C:\Users\YourName\Desktop"
+# Place the "Voice to text" folder here
+```
+
+### Step 2: Install Python
+1. Download Python from [python.org](https://python.org)
+2. Install with "Add Python to PATH" checked
+3. Verify installation:
+```bash
+python --version
+pip --version
+```
+
+### Step 3: Install Dependencies
+```bash
+cd "C:\Users\YourName\Desktop\Voice to text"
+pip install -r requirements.txt
+```
+
+### Step 4: Get API Key
+1. Go to [Google AI Studio](https://aistudio.google.com/)
+2. Create free account
+3. Generate API Key
+4. Copy the key
+
+### Step 5: Configure API Key
+Open `main.py` and replace the API key:
+```python
+API_KEY = "YOUR_GEMINI_API_KEY_HERE"  # Replace with your key
+```
+
+### Step 6: Test Installation
+```bash
+python main.py
+```
+
+---
+
+## 🎮 Usage
+
+### Method 1: Batch File (Simplest)
+```bash
+# Double-click this file
+run_modular.bat
+```
+
+### Method 2: Command Line
+```bash
+cd "C:\Users\YourName\Desktop\Voice to text"
+python main.py
+```
+
+### Method 3: Custom Configuration
+```python
+from app_factory import ApplicationFactory
+
+# Persian (default)
+app = ApplicationFactory.create_persian_application("YOUR_API_KEY")
+results = app.process_audio_files("assets")
+
+# English
+app = ApplicationFactory.create_english_application("YOUR_API_KEY")
+results = app.process_audio_files("assets")
+
+# Custom
+app = ApplicationFactory.create_application(
+    api_key="YOUR_API_KEY",
+    model_name="gemini-2.0-flash",
+    language="persian"
+)
+```
+
+### Execution Steps
+
+1. **Place Files**: Put audio files in `assets/voice/`
+2. **Run**: Choose one of the methods above
+3. **Wait**: Processing may take several minutes
+4. **View Results**: MD files generated in `results/` folder
+
+---
+
+## 📁 Project Structure
+
+```
+Voice to text/
+│
+├── 📁 assets/                          # Input files
+│   └── 📁 voice/                       # Audio files
+│       └── 🎵 1.mp3                    # Sample audio file
+│
+├── 📁 results/                         # Output files
+│   ├── 📄 1_analysis.md               # Individual file analysis
+│   └── 📄 summary_report.md           # Summary report
+│
+├── 📁 src/                            # Source code (modular architecture)
+│   ├── 📁 interfaces/                 # Interface definitions
+│   │   └── 📄 __init__.py            # System interfaces
+│   │
+│   ├── 📁 models/                     # Data models
+│   │   ├── 📄 __init__.py
+│   │   ├── 📄 audio_file.py          # AudioFile model
+│   │   └── 📄 analysis_result.py     # AnalysisResult model
+│   │
+│   ├── 📁 services/                   # Business services
+│   │   ├── 📄 __init__.py
+│   │   ├── 📄 configuration_service.py    # Configuration management
+│   │   ├── 📄 audio_file_service.py       # File operations
+│   │   ├── 📄 gemini_analyzer.py          # AI analysis
+│   │   ├── 📄 prompt_provider.py          # Prompt provider
+│   │   └── 📄 report_generator.py         # Report generation
+│   │
+│   ├── 📄 __init__.py
+│   └── 📄 application.py              # Main orchestrator
+│
+├── 📄 main.py                         # Application entry point
+├── 📄 app_factory.py                  # Dependency injection factory
+├── 📄 requirements.txt                # Python dependencies
+├── 📄 run_modular.bat                 # Windows execution script
+└── 📄 README.md                       # This file
+```
+
+---
+
+## 📖 API Documentation
+
+### Core Classes
+
+#### `main.py` - Application Entry Point
+```python
+# Main application entry point
+# Contains API Key configuration and file paths
+# Displays architecture information
+# Runs the main application
+```
+
+#### `app_factory.py` - Dependency Injection Factory
+```python
+# Creates application instances with Dependency Injection
+# Configures all services
+# Supports multiple languages
+# Implements Factory Pattern
+```
+
+### Interfaces (`src/interfaces/`)
+
+#### `__init__.py` - Interface Definitions
+```python
+# IAudioFileService: File operations interface
+# IAIAnalyzer: AI analysis interface
+# IReportGenerator: Report generation interface
+# IConfigurationService: Configuration interface
+# IPromptProvider: Prompt provision interface
+```
+
+### Models (`src/models/`)
+
+#### `audio_file.py` - Audio File Model
+```python
+@dataclass
+class AudioFile:
+    file_path: str          # File path
+    file_name: str          # File name
+    stem_name: str          # Name without extension
+    format: str             # File format
+    file_size: int          # File size in bytes
+```
+
+#### `analysis_result.py` - Analysis Result Model
+```python
+@dataclass  
+class AnalysisResult:
+    audio_file: AudioFile       # Audio file reference
+    analysis_text: str          # Analysis text
+    is_successful: bool         # Success status
+    processing_time: float      # Processing time in seconds
+    timestamp: datetime         # Analysis timestamp
+    error_message: str          # Error message if failed
+    output_file_path: str       # Output file path
+```
+
+### Services (`src/services/`)
+
+#### `configuration_service.py` - Configuration Management
+```python
+class ConfigurationService:
+    # Manages API Key
+    # Configures Gemini model
+    # Validates settings
+    # Provides Gemini client access
+```
+
+#### `audio_file_service.py` - File Operations
+```python
+class AudioFileService:
+    # Finds audio files
+    # Validates supported formats
+    # Creates AudioFile models
+    # Manages file paths
+```
+
+#### `gemini_analyzer.py` - AI Analysis
+```python
+class GeminiAnalyzer:
+    # Sends files to Gemini
+    # Receives text analysis
+    # Handles API errors
+    # Tracks processing time
+```
+
+#### `prompt_provider.py` - Prompt Provider
+```python
+class PersianPromptProvider:
+    # Optimized Persian prompts
+    # Desired output structure
+    # Analysis instructions
+
+class EnglishPromptProvider:
+    # English prompts
+    # English structure
+```
+
+#### `report_generator.py` - Report Generation
+```python
+class MarkdownReportGenerator:
+    # Generates Markdown files
+    # Beautiful formatting
+    # Information tables
+    # Summary reports
+```
+
+#### `application.py` - Main Orchestrator
+```python
+class VoiceToTextApplication:
+    # Coordinates between services
+    # Manages overall process
+    # Reports progress
+    # Handles errors
+```
+
+---
+
+## 📊 Sample Output
+
+### Individual Analysis File (`1_analysis.md`)
+````markdown
+# Audio File Analysis: conversation.mp3
+
+## File Information
+
+| Property | Value |
+|----------|-------|
+| **File Name** | `conversation.mp3` |
+| **Format** | MP3 |
+| **File Size** | 2.1 MB |
+| **Processing Time** | 15.3 seconds |
+| **Status** | ✅ Success |
+
+## Analysis Results
+
+### 1. Complete Conversation Transcript
+**Person A:** Hello, good day
+**Person B:** Hello, how can I help you?
+...
+
+### 2. Minute-by-Minute Analysis
+**Minute 0-1:** Greetings and introductions
+**Minute 1-2:** Customer presents main issue
+...
+
+### 3. Summary Report
+- **Topic:** Technical issue with application
+- **Problem:** Server connection failure
+- **Solution:** Network settings reset
+- **Status:** ✅ Resolved
+````
+
+### Summary Report File (`summary_report.md`)
+````markdown
+# Processing Summary Report
+
+## Overall Statistics
+
+| Statistic | Count |
+|-----------|-------|
+| **Total Files** | 5 files |
+| **Successful** | 4 ✅ |
+| **Failed** | 1 ❌ |
+| **Success Rate** | 80% |
+
+## Processed Files
+
+| File | Status | Link |
+|------|--------|------|
+| `call1.mp3` | ✅ | [View](call1_analysis.md) |
+| `call2.mp3` | ✅ | [View](call2_analysis.md) |
+...
+````
+
+---
+
+## 🔧 Troubleshooting
+
+### Common Issues and Solutions
+
+#### ❌ API Key Error
+```
+Error: Invalid API key
+```
+**Solution:**
+1. Verify API Key in `main.py`
+2. Ensure API is enabled in Google AI Studio
+3. Check internet connection
+
+#### ❌ Dependency Installation Error
+```
+ERROR: Could not install packages
+```
+**Solution:**
+```bash
+pip install --upgrade pip
+pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt
+```
+
+#### ❌ Audio File Not Found
+```
+No audio files found
+```
+**Solution:**
+1. Place files in `assets/voice/`
+2. Check supported formats
+3. Verify folder name (lowercase 'voice')
+
+#### ❌ Memory Error
+```
+Out of memory error
+```
+**Solution:**
+1. Reduce number of files
+2. Lower audio file quality
+3. Close unnecessary applications
+
+#### ❌ Connection Error
+```
+Connection timeout
+```
+**Solution:**
+1. Check internet connection
+2. Use VPN if service is blocked
+3. Retry after a few minutes
+
+### Debugging and Logs
+
+#### Enable Debug Mode
+Modify `main.py`:
+```python
+# Add detailed logging
+import logging
+logging.basicConfig(level=logging.DEBUG)
+```
+
+#### Check Generated Files
+```bash
+# List output files
+dir results\
+
+# View content
+type "results\summary_report.md"
+```
+
+### Getting Support
+
+If issues persist:
+1. Check GitHub Issues
+2. Provide error details
+3. Share log files
+
+---
+
+## 🤝 Contributing
+
+### Development Setup
+
+1. **Fork the Repository**
+2. **Create Feature Branch**
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+3. **Make Changes**
+4. **Run Tests**
+   ```bash
+   python -m pytest tests/
+   ```
+5. **Commit Changes**
+   ```bash
+   git commit -m "Add amazing feature"
+   ```
+6. **Push and Create PR**
+
+### Code Standards
+
+- Follow **SOLID principles**
+- Use **type hints**
+- Write **comprehensive tests**
+- Document **public APIs**
+- Follow **PEP 8** style guide
+
+### Areas for Contribution
+
+- 🌐 **Multi-language support**
+- 🖥️ **GUI development**
+- 🐳 **Docker containerization**
+- ☁️ **Cloud deployment**
+- 📊 **Advanced analytics**
+- 🔧 **Performance optimization**
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📞 Support
+
+- **GitHub Issues**: Bug reports and feature requests
+- **Email**: support@example.com
+- **Documentation**: [Project Wiki](https://github.com/project/wiki)
+
+---
+
+## 🎯 Roadmap
+
+### Version 2.1 (Planned)
+- [ ] Multi-language support (English, Arabic)
+- [ ] Real-time processing
+- [ ] Web API interface
+- [ ] Docker support
+
+### Version 3.0 (Future)
+- [ ] GUI application
+- [ ] Cloud deployment
+- [ ] Advanced analytics
+- [ ] Batch job scheduler
+
+---
+
+## 🙏 Acknowledgments
+
+- **Google Gemini Team** for providing the AI API
+- **Python Community** for excellent libraries
+- **Open Source Contributors** worldwide
+
+---
+
+**Built with ❤️ for the Developer Community**

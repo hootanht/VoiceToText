@@ -1,0 +1,12 @@
+# Voice to Text Analyzer Dependencies
+# Core AI and API
+google-genai>=1.16.0
+
+# Standard library enhancements  
+pathlib2>=2.3.0
+typing-extensions>=4.0.0
+
+# Development and testing (optional)
+pytest>=7.0.0
+black>=22.0.0
+flake8>=5.0.0

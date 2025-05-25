@@ -14,7 +14,8 @@ env:
 jobs:
   lint:
     name: Code Quality & Linting
-    runs-on: ubuntu-latest    steps:
+    runs-on: ubuntu-latest    
+    steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -215,7 +216,8 @@ jobs:
 
       - name: Build distribution
         run: |
-          python -m build      - name: Check distribution
+          python -m build
+      - name: Check distribution
         run: |
           python -m twine check dist/*
 
@@ -251,7 +253,8 @@ jobs:
       - name: Run Bandit (Security Linting)
         run: |
           bandit -r src/ -f json -o bandit-report.json || true
-          bandit -r src/      - name: Upload security scan results
+          bandit -r src/
+      - name: Upload security scan results
         uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -324,7 +327,9 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4      - name: Download build artifacts
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
           name: dist

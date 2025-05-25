@@ -57,8 +57,8 @@ class Python38CompatibilityRunner:
 
         # Test f-string debugging (=)
         try:
-            x = 42
-            exec("f'{x=}'")
+            test_var = 42
+            exec("f'{test_var=}'")
             features["f_string_debug"] = True
         except SyntaxError:
             features["f_string_debug"] = False

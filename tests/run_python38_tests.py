@@ -50,8 +50,8 @@ def check_python38_features():
 
     # Test f-string = debugging
     try:
-        x = 42
-        result = eval("f'{x=}'")
+        test_var = 42
+        result = eval("f'{test_var=}'")
         features["f_string_debug"] = True
         print("  ✅ F-string debugging (=) - Available")
     except SyntaxError:

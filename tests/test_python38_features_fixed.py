@@ -119,7 +119,7 @@ class TestPython38TypeHints(unittest.TestCase):
 
     def test_advanced_type_hints(self):
         """Test modern type hints compatibility"""
-        from typing import Final, Union
+        from typing import Final
 
         # Try to import Literal (added in Python 3.8)
         try:
@@ -477,8 +477,8 @@ class TestPython38Compatibility(unittest.TestCase):
 
         # Test f-string debugging
         try:
-            x = 42
-            exec("f'{x=}'")
+            test_var = 42
+            exec("f'{test_var=}'")
             features_available["f_string_debug"] = True
         except SyntaxError:
             features_available["f_string_debug"] = False

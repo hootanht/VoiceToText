@@ -15,8 +15,25 @@ from src.models import AudioFile
 class AudioFileService(IAudioFileService):
     """Handles audio file operations following Single Responsibility Principle"""
 
-    def __init__(self, config_service: IConfigurationService):
-        self._config_service = config_service
+    def __init__(self, config_service: IConfigurationService = None, **kwargs):
+        # Handle backwards compatibility for old-style constructors
+        if config_service is None and kwargs:
+            # Legacy constructor with api_key, language parameters
+            from src.services.configuration_service import ConfigurationService
+
+            api_key = kwargs.get("api_key")
+            model_name = kwargs.get("model_name")
+            self._config_service = ConfigurationService(
+                api_key=api_key, model_name=model_name
+            )
+        elif config_service is None:
+            # No arguments provided, use default configuration
+            from src.services.configuration_service import ConfigurationService
+
+            self._config_service = ConfigurationService()
+        else:
+            # New constructor with config_service
+            self._config_service = config_service
 
     def find_audio_files(self, folder_path: str) -> List[AudioFile]:
         """Find all audio files in the specified folder and subfolders"""

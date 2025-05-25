@@ -175,6 +175,11 @@ jobs:
           print(f'Model: {config.get_model_name()}')
           "
 
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
       - name: Test Docker Compose
         run: |
           echo "GEMINI_API_KEY=test_key" > .env

@@ -14,10 +14,11 @@ load_dotenv()
 
 class ConfigurationService(IConfigurationService):
     """Manages application configuration following Single Responsibility Principle"""
+
     def __init__(self, api_key: str = None, model_name: str = None):
         self._api_key = api_key or os.getenv('GEMINI_API_KEY')
         self._model_name = model_name or os.getenv('GEMINI_MODEL_NAME', 'gemini-2.0-flash')
-        self._supported_extensions = ['mp3', 'wav', 'aiff', 'aac', 'ogg', 'flac']
+        self._supported_extensions = ['mp3', 'wav', 'aiff', 'aac', 'ogg', 'flac', 'm4a']
     
     def get_api_key(self) -> str:
         """Get the Gemini API key"""

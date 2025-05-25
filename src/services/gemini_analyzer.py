@@ -36,8 +36,13 @@ class GeminiAnalyzer(IAIAnalyzer):
         except Exception as e:
             raise ConnectionError(f"Failed to initialize Gemini client: {str(e)}")
     
-    def analyze_audio(self, audio_file: AudioFile) -> AnalysisResult:
-        """Analyze an audio file and return the result"""
+    def analyze_audio(self, audio_file: AudioFile, language: str = None) -> AnalysisResult:
+        """Analyze an audio file and return the result
+        
+        Args:
+            audio_file (AudioFile): The audio file to analyze
+            language (str, optional): The language of the audio. Defaults to None.
+        """
         start_time = time.time()
         
         try:

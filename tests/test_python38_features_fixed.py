@@ -6,29 +6,29 @@ This module comprehensively tests Python 3.8 compatibility for the Voice to Text
 covering all language features, typing, async/await, and API patterns.
 """
 
-import unittest
-import sys
-import os
 import asyncio
+import os
+import sys
+import unittest
 from pathlib import Path
-from unittest.mock import patch, MagicMock
-from typing import List, Dict, Optional, Any, Union
+from typing import Any, Dict, List, Optional, Union
+from unittest.mock import MagicMock, patch
 
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 try:
-    from services.configuration_service import ConfigurationService
-    from services.audio_file_service import AudioFileService
-    from models.audio_file import AudioFile
     from models.analysis_result import AnalysisResult
+    from models.audio_file import AudioFile
+    from services.audio_file_service import AudioFileService
+    from services.configuration_service import ConfigurationService
 except ImportError:
     # Fallback for different import paths
     sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-    from src.services.configuration_service import ConfigurationService
-    from src.services.audio_file_service import AudioFileService
-    from src.models.audio_file import AudioFile
     from src.models.analysis_result import AnalysisResult
+    from src.models.audio_file import AudioFile
+    from src.services.audio_file_service import AudioFileService
+    from src.services.configuration_service import ConfigurationService
 
 
 class TestPython38WalrusOperator(unittest.TestCase):
@@ -444,10 +444,10 @@ class TestPython38Compatibility(unittest.TestCase):
     def test_import_compatibility(self):
         """Test that all required imports work"""
         # Test core imports
+        import asyncio
         import json
         import pathlib
         import typing
-        import asyncio
         import unittest.mock
 
         # Test our application imports

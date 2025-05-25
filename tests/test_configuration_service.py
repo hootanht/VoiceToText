@@ -3,10 +3,10 @@ Unit tests for Configuration Service
 تست‌های واحد برای سرویس پیکربندی
 """
 
-import unittest
-import sys
 import os
-from unittest.mock import patch, MagicMock
+import sys
+import unittest
+from unittest.mock import MagicMock, patch
 
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
@@ -186,7 +186,7 @@ class TestConfigurationService(unittest.TestCase):
 
     def test_python38_typing_features(self):
         """Test Python 3.8 typing features"""
-        from typing import TypedDict, Final, Literal
+        from typing import Final, Literal, TypedDict
 
         # Test Final annotation (Python 3.8+)
         try:

@@ -7,13 +7,13 @@ This script runs comprehensive Python 3.8 compatibility tests and provides
 detailed reporting on feature availability and compatibility status.
 """
 
-import sys
-import os
-import unittest
 import importlib
 import json
-from typing import Dict, List, Any, Optional
+import os
+import sys
+import unittest
 from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 # Ensure we can import our test modules
 sys.path.insert(0, os.path.dirname(__file__))

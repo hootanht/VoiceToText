@@ -6,37 +6,37 @@ This module contains comprehensive tests for all service classes,
 including edge cases, error handling, and Python 3.8 compatibility.
 """
 
-import unittest
-import sys
 import os
+import sys
 import tempfile
+import unittest
 from pathlib import Path
-from unittest.mock import patch, MagicMock, mock_open
+from unittest.mock import MagicMock, mock_open, patch
 
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 try:
-    from services.audio_file_service import AudioFileService
-    from services.gemini_analyzer import GeminiAnalyzer
-    from services.prompt_provider import PersianPromptProvider, EnglishPromptProvider
-    from services.report_generator import MarkdownReportGenerator
-    from services.configuration_service import ConfigurationService
-    from models.audio_file import AudioFile
     from models.analysis_result import AnalysisResult
+    from models.audio_file import AudioFile
+    from services.audio_file_service import AudioFileService
+    from services.configuration_service import ConfigurationService
+    from services.gemini_analyzer import GeminiAnalyzer
+    from services.prompt_provider import EnglishPromptProvider, PersianPromptProvider
+    from services.report_generator import MarkdownReportGenerator
 except ImportError:
     # Fallback for different import paths
     sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+    from src.models.analysis_result import AnalysisResult
+    from src.models.audio_file import AudioFile
     from src.services.audio_file_service import AudioFileService
+    from src.services.configuration_service import ConfigurationService
     from src.services.gemini_analyzer import GeminiAnalyzer
     from src.services.prompt_provider import (
-        PersianPromptProvider,
         EnglishPromptProvider,
+        PersianPromptProvider,
     )
     from src.services.report_generator import MarkdownReportGenerator
-    from src.services.configuration_service import ConfigurationService
-    from src.models.audio_file import AudioFile
-    from src.models.analysis_result import AnalysisResult
 
 
 class TestAudioFileServiceComprehensive(unittest.TestCase):
@@ -404,7 +404,7 @@ class TestPython38IntegrationFeatures(unittest.TestCase):
 
     def test_typing_integration(self):
         """Test typing integration across services"""
-        from typing import List, Optional, Dict, Any
+        from typing import Any, Dict, List, Optional
 
         def process_audio_files(
             files: List[AudioFile], config: Optional[Dict[str, Any]] = None

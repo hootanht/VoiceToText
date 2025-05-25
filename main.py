@@ -7,7 +7,9 @@ using Google's Gemini AI for Persian and English audio analysis.
 """
 
 import os
+
 from dotenv import load_dotenv
+
 from app_factory import ApplicationFactory
 
 # Load environment variables from .env file

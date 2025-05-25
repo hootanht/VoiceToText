@@ -5,7 +5,9 @@ Configuration Service
 
 import os
 from typing import List
+
 from dotenv import load_dotenv
+
 from src.interfaces import IConfigurationService
 
 # Load environment variables from .env file

@@ -4,10 +4,10 @@ Dependency Injection Factory
 """
 
 from src.application import VoiceToTextApplication
-from src.services.configuration_service import ConfigurationService
-from src.services.prompt_provider import PersianPromptProvider
 from src.services.audio_file_service import AudioFileService
+from src.services.configuration_service import ConfigurationService
 from src.services.gemini_analyzer import GeminiAnalyzer
+from src.services.prompt_provider import PersianPromptProvider
 from src.services.report_generator import MarkdownReportGenerator
 
 

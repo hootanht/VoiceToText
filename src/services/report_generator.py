@@ -7,6 +7,7 @@ import os
 from datetime import datetime
 from pathlib import Path
 from typing import List
+
 from src.interfaces import IReportGenerator
 from src.models import AnalysisResult
 

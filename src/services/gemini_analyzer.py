@@ -4,9 +4,11 @@ Gemini AI Analyzer Service
 """
 
 import time
+
 import google.generativeai as genai
-from src.interfaces import IAIAnalyzer, IPromptProvider, IConfigurationService
-from src.models import AudioFile, AnalysisResult
+
+from src.interfaces import IAIAnalyzer, IConfigurationService, IPromptProvider
+from src.models import AnalysisResult, AudioFile
 
 
 class GeminiAnalyzer(IAIAnalyzer):

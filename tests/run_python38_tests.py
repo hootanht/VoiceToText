@@ -6,10 +6,10 @@ This script runs all tests and specifically checks for Python 3.8 compatibility 
 It also provides detailed reporting on which Python 3.8 features are working.
 """
 
+import importlib
+import os
 import sys
 import unittest
-import os
-import importlib
 from pathlib import Path
 
 

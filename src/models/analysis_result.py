@@ -5,6 +5,7 @@ Analysis Result Model
 
 from datetime import datetime
 from typing import Optional
+
 from .audio_file import AudioFile
 
 

@@ -2,9 +2,9 @@
 Test cases for AudioFile model
 """
 
-import unittest
-import sys
 import os
+import sys
+import unittest
 
 # Add the src directory to the path for importing modules
 try:

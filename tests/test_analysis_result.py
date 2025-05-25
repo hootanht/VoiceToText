@@ -3,9 +3,9 @@ Unit tests for Analysis Result model
 تست‌های واحد برای مدل نتیجه تحلیل
 """
 
-import unittest
-import sys
 import os
+import sys
+import unittest
 from datetime import datetime
 from pathlib import Path
 
@@ -243,7 +243,7 @@ class TestAnalysisResult(unittest.TestCase):
 
     def test_python38_typing_with_metadata(self):
         """Test Python 3.8 typing features with metadata"""
-        from typing import Dict, Any, Optional
+        from typing import Any, Dict, Optional
 
         def create_analysis_with_metadata(
             audio_file: AudioFile,

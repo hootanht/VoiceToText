@@ -5,13 +5,14 @@ Voice to Text Application
 
 import os
 from typing import List, Optional
+
 from src.interfaces import (
-    IAudioFileService,
     IAIAnalyzer,
-    IReportGenerator,
+    IAudioFileService,
     IConfigurationService,
+    IReportGenerator,
 )
-from src.models import AudioFile, AnalysisResult
+from src.models import AnalysisResult, AudioFile
 
 
 class VoiceToTextApplication:

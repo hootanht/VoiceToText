@@ -3,10 +3,11 @@ Audio File Service
 سرویس فایل صوتی
 """
 
-import os
 import glob
-from typing import List
+import os
 from pathlib import Path
+from typing import List, Union
+
 from src.interfaces import IAudioFileService, IConfigurationService
 from src.models import AudioFile
 
@@ -78,7 +79,7 @@ class AudioFileService(IAudioFileService):
         except Exception:
             return False
 
-    def get_file_info(self, file_path_or_audio: str | AudioFile) -> dict:
+    def get_file_info(self, file_path_or_audio: Union[str, AudioFile]) -> dict:
         """Get detailed information about an audio file"""
         if isinstance(file_path_or_audio, str):
             audio_file = self._create_audio_file(file_path_or_audio)

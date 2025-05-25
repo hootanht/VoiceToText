@@ -2,10 +2,6 @@
 
 An advanced modular AI-powered audio analysis system built with Google Gemini API that converts audio files to text and provides comprehensive analysis reports in Markdown format.
 
-[![Tests](https://github.com/user/voice-to-text/actions/workflows/test.yml/badge.svg)](https://github.com/user/voice-to-text/actions/workflows/test.yml)
-[![Performance](https://github.com/user/voice-to-text/actions/workflows/performance.yml/badge.svg)](https://github.com/user/voice-to-text/actions/workflows/performance.yml)
-[![Docker](https://github.com/user/voice-to-text/actions/workflows/deploy.yml/badge.svg)](https://github.com/user/voice-to-text/actions/workflows/deploy.yml)
-[![Documentation](https://github.com/user/voice-to-text/actions/workflows/docs.yml/badge.svg)](https://user.github.io/voice-to-text/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## 📋 Table of Contents

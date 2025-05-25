@@ -10,6 +10,7 @@ An advanced modular AI-powered audio analysis system built with Google Gemini AP
 - [📋 Prerequisites](#-prerequisites)
 - [🚀 Installation](#-installation)
 - [🎮 Usage](#-usage)
+- [⚙️ Environment Configuration](#-environment-configuration)
 - [📁 Project Structure](#-project-structure)
 - [📖 API Documentation](#-api-documentation)
 - [📊 Sample Output](#-sample-output)
@@ -189,11 +190,32 @@ pip install -r requirements.txt
 3. Generate API Key
 4. Copy the key
 
-### Step 5: Configure API Key
+### Step 5: Configure Environment Variables (Recommended)
+
+#### Option A: Using Environment Variables (🔒 Secure)
+1. **Copy the example environment file:**
+   ```bash
+   copy .env.example .env
+   ```
+
+2. **Edit the `.env` file** with your actual values:
+   ```env
+   GEMINI_API_KEY=your_actual_api_key_here
+   GEMINI_MODEL_NAME=gemini-2.0-flash
+   ```
+
+3. **Install python-dotenv** (if not already installed):
+   ```bash
+   pip install python-dotenv
+   ```
+
+#### Option B: Direct Configuration (Legacy)
 Open `main.py` and replace the API key:
 ```python
 API_KEY = "YOUR_GEMINI_API_KEY_HERE"  # Replace with your key
 ```
+
+> 🛡️ **Security Note**: Using environment variables (Option A) is recommended as it keeps sensitive information out of your source code.
 
 ### Step 6: Test Installation
 ```bash
@@ -242,6 +264,64 @@ app = ApplicationFactory.create_application(
 2. **Run**: Choose one of the methods above
 3. **Wait**: Processing may take several minutes
 4. **View Results**: MD files generated in `results/` folder
+
+---
+
+## ⚙️ Environment Configuration
+
+### 🔐 Secure Configuration with Environment Variables
+
+The application now supports secure configuration through environment variables, keeping sensitive information out of your source code.
+
+#### Environment Variables
+
+| Variable | Description | Default | Required |
+|----------|-------------|---------|-----------|
+| `GEMINI_API_KEY` | Your Google Gemini API key | None | ✅ Yes |
+| `GEMINI_MODEL_NAME` | Gemini model to use | `gemini-2.0-flash` | ❌ No |
+
+#### Setup Instructions
+
+1. **Copy the example file:**
+   ```bash
+   copy .env.example .env
+   ```
+
+2. **Edit your `.env` file:**
+   ```env
+   # Your actual Gemini API key
+   GEMINI_API_KEY=AIzaSyD7zLhMbbmZVGMC_Wc96WVi5keyh6_Fbj8
+   
+   # Optional: Specify a different model
+   GEMINI_MODEL_NAME=gemini-2.0-flash
+   ```
+
+3. **Install python-dotenv** (if needed):
+   ```bash
+   pip install python-dotenv
+   ```
+
+#### How It Works
+
+The `ConfigurationService` automatically:
+- ✅ Checks for environment variables first
+- ✅ Falls back to default values if not set
+- ✅ Provides a secure way to manage API keys
+- ✅ Supports different configurations per environment
+
+```python
+# The service automatically uses environment variables
+config = ConfigurationService()
+api_key = config.get_api_key()  # Gets from GEMINI_API_KEY env var
+model = config.get_model_name()  # Gets from GEMINI_MODEL_NAME or default
+```
+
+#### Benefits
+
+- 🔒 **Security**: API keys are not in source code
+- 🌍 **Environment-specific**: Different keys for dev/prod
+- 🚀 **Easy deployment**: No code changes needed
+- 📝 **Version control safe**: .env files are gitignored
 
 ---
 
@@ -349,10 +429,11 @@ class AnalysisResult:
 #### `configuration_service.py` - Configuration Management
 ```python
 class ConfigurationService:
-    # Manages API Key
-    # Configures Gemini model
-    # Validates settings
-    # Provides Gemini client access
+    # Manages API Key from environment variables
+    # Configures Gemini model from GEMINI_MODEL_NAME
+    # Provides secure environment-based configuration
+    # Validates settings and provides fallback defaults
+    # Supports multiple environments (dev/staging/prod)
 ```
 
 #### `audio_file_service.py` - File Operations
@@ -588,8 +669,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 - **GitHub Issues**: Bug reports and feature requests
-- **Email**: support@example.com
-- **Documentation**: [Project Wiki](https://github.com/project/wiki)
+- **Email**: hootanhemmati@outlook.com
 
 ---
 

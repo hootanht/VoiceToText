@@ -1,0 +1,419 @@
+name: Documentation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "README.md"
+      - "src/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "README.md"
+      - "src/**"
+  workflow_dispatch:
+
+jobs:
+  build-docs:
+    name: Build Documentation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install documentation dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install mkdocs mkdocs-material mkdocs-mermaid2-plugin
+          pip install mkdocstrings mkdocstrings-python
+          pip install -r requirements.txt
+
+      - name: Create docs directory structure
+        run: |
+          mkdir -p docs/{api,user-guide,developer-guide,assets}
+
+      - name: Generate API documentation
+        run: |
+          python -c "
+          import os
+          import sys
+          import inspect
+          from pathlib import Path
+
+          sys.path.insert(0, 'src')
+
+          # Import modules
+          from services.configuration_service import ConfigurationService
+          from services.audio_file_service import AudioFileService
+          from models.audio_file import AudioFile
+          from models.analysis_result import AnalysisResult
+
+          def generate_class_docs(cls, module_name):
+              '''Generate markdown documentation for a class'''
+              doc = f'# {cls.__name__}\n\n'
+              
+              if cls.__doc__:
+                  doc += f'{cls.__doc__}\n\n'
+              
+              doc += f'**Module:** {module_name}\n\n'
+              
+              # Constructor
+              if hasattr(cls, '__init__') and cls.__init__.__doc__:
+                  doc += '## Constructor\n\n'
+                  doc += f'```python\n{cls.__name__}.__init__{inspect.signature(cls.__init__)}\n```\n\n'
+                  doc += f'{cls.__init__.__doc__}\n\n'
+              
+              # Methods
+              methods = [method for method in dir(cls) if not method.startswith('_') and callable(getattr(cls, method))]
+              if methods:
+                  doc += '## Methods\n\n'
+                  for method_name in methods:
+                      method = getattr(cls, method_name)
+                      if hasattr(method, '__doc__') and method.__doc__:
+                          doc += f'### {method_name}\n\n'
+                          doc += f'```python\n{method_name}{inspect.signature(method)}\n```\n\n'
+                          doc += f'{method.__doc__}\n\n'
+              
+              return doc
+
+          # Generate documentation for each class
+          classes = [
+              (ConfigurationService, 'services.configuration_service'),
+              (AudioFileService, 'services.audio_file_service'),
+              (AudioFile, 'models.audio_file'),
+              (AnalysisResult, 'models.analysis_result')
+          ]
+
+          for cls, module_name in classes:
+              doc_content = generate_class_docs(cls, module_name)
+              filename = f'docs/api/{cls.__name__.lower()}.md'
+              with open(filename, 'w', encoding='utf-8') as f:
+                  f.write(doc_content)
+              print(f'Generated {filename}')
+          "
+
+      - name: Create mkdocs.yml
+        run: |
+          cat > mkdocs.yml << 'EOF'
+          site_name: Voice to Text Analyzer Documentation
+          site_description: Comprehensive documentation for the Voice to Text Analyzer using Google Gemini AI
+          site_author: Voice to Text Team
+
+          theme:
+            name: material
+            palette:
+              - scheme: default
+                primary: blue
+                accent: blue
+                toggle:
+                  icon: material/brightness-7
+                  name: Switch to dark mode
+              - scheme: slate
+                primary: blue
+                accent: blue
+                toggle:
+                  icon: material/brightness-4
+                  name: Switch to light mode
+            features:
+              - navigation.tabs
+              - navigation.sections
+              - navigation.expand
+              - navigation.top
+              - search.highlight
+              - content.code.copy
+
+          plugins:
+            - search
+            - mermaid2
+
+          nav:
+            - Home: index.md
+            - User Guide:
+              - Getting Started: user-guide/getting-started.md
+              - Configuration: user-guide/configuration.md
+              - Usage Examples: user-guide/examples.md
+              - Troubleshooting: user-guide/troubleshooting.md
+            - API Reference:
+              - Configuration Service: api/configurationservice.md
+              - Audio File Service: api/audiofileservice.md
+              - Audio File Model: api/audiofile.md
+              - Analysis Result Model: api/analysisresult.md
+            - Developer Guide:
+              - Architecture: developer-guide/architecture.md
+              - Contributing: developer-guide/contributing.md
+              - Testing: developer-guide/testing.md
+              - Deployment: developer-guide/deployment.md
+
+          markdown_extensions:
+            - admonition
+            - codehilite
+            - pymdownx.superfences:
+                custom_fences:
+                  - name: mermaid
+                    class: mermaid
+                    format: !!python/name:mermaid2.fence_mermaid
+            - pymdownx.tabbed
+            - pymdownx.details
+            - toc:
+                permalink: true
+          EOF
+
+      - name: Create main documentation pages
+        run: |
+          # Home page
+          cat > docs/index.md << 'EOF'
+          # Voice to Text Analyzer
+
+          A sophisticated, modular voice-to-text analyzer powered by Google's Gemini AI, designed with SOLID principles for Persian and English audio analysis.
+
+          ## Features
+
+          - 🎤 **Multi-language Support**: Persian and English audio processing
+          - 🤖 **AI-Powered**: Uses Google's advanced Gemini AI models
+          - 🏗️ **Modular Architecture**: Built with SOLID principles for maintainability
+          - 🔒 **Secure Configuration**: Environment-based API key management
+          - 🐳 **Docker Ready**: Complete containerization support
+          - 🚀 **CI/CD Pipeline**: Automated testing and deployment
+
+          ## Quick Start
+
+          1. **Install Dependencies**
+             ```bash
+             pip install -r requirements.txt
+             ```
+
+          2. **Configure Environment**
+             ```bash
+             cp .env.example .env
+             # Edit .env with your Gemini API key
+             ```
+
+          3. **Run the Application**
+             ```bash
+             python main.py
+             ```
+
+          ## Architecture Overview
+
+          ```mermaid
+          graph TD
+              A[Main Application] --> B[Application Factory]
+              B --> C[Configuration Service]
+              B --> D[Audio File Service]
+              B --> E[Gemini Analyzer]
+              B --> F[Report Generator]
+              
+              C --> G[Environment Variables]
+              D --> H[Audio Files]
+              E --> I[Gemini AI API]
+              F --> J[Analysis Reports]
+          ```
+
+          ## Navigation
+
+          - **[User Guide](user-guide/getting-started.md)**: Learn how to use the application
+          - **[API Reference](api/configurationservice.md)**: Detailed API documentation
+          - **[Developer Guide](developer-guide/architecture.md)**: Architecture and development information
+          EOF
+
+          # User guide pages
+          mkdir -p docs/user-guide
+
+          cat > docs/user-guide/getting-started.md << 'EOF'
+          # Getting Started
+
+          ## Prerequisites
+
+          - Python 3.8 or higher
+          - Google Gemini API key
+          - Audio files in supported formats (MP3, WAV, AIFF, AAC, OGG, FLAC)
+
+          ## Installation
+
+          ### From Source
+
+          1. Clone the repository:
+             ```bash
+             git clone <repository-url>
+             cd voice-to-text
+             ```
+
+          2. Install dependencies:
+             ```bash
+             pip install -r requirements.txt
+             ```
+
+          3. Configure environment:
+             ```bash
+             cp .env.example .env
+             ```
+             
+          4. Edit `.env` file with your API key:
+             ```
+             GEMINI_API_KEY=your_api_key_here
+             GEMINI_MODEL_NAME=gemini-2.0-flash
+             ```
+
+          ### Using Docker
+
+          1. Build and run with Docker Compose:
+             ```bash
+             docker-compose up --build
+             ```
+
+          ## First Run
+
+          1. Place your audio files in the `assets/voice/` directory
+          2. Run the application:
+             ```bash
+             python main.py
+             ```
+          3. Check the `results/` directory for analysis output
+          EOF
+
+          cat > docs/user-guide/configuration.md << 'EOF'
+          # Configuration
+
+          ## Environment Variables
+
+          The application uses environment variables for configuration:
+
+          | Variable | Description | Default | Required |
+          |----------|-------------|---------|----------|
+          | `GEMINI_API_KEY` | Your Google Gemini API key | None | ✅ |
+          | `GEMINI_MODEL_NAME` | Gemini model to use | `gemini-2.0-flash` | ❌ |
+
+          ## Supported Audio Formats
+
+          - **MP3** (.mp3)
+          - **WAV** (.wav)
+          - **AIFF** (.aiff)
+          - **AAC** (.aac)
+          - **OGG** (.ogg)
+          - **FLAC** (.flac)
+
+          ## File Structure
+
+          ```
+          project/
+          ├── assets/voice/     # Input audio files
+          ├── results/          # Analysis output
+          ├── src/              # Source code
+          └── .env              # Configuration
+          ```
+          EOF
+
+          # Developer guide pages
+          mkdir -p docs/developer-guide
+
+          cat > docs/developer-guide/architecture.md << 'EOF'
+          # Architecture
+
+          ## Design Principles
+
+          The application follows SOLID principles:
+
+          - **S**ingle Responsibility Principle
+          - **O**pen/Closed Principle
+          - **L**iskov Substitution Principle
+          - **I**nterface Segregation Principle
+          - **D**ependency Inversion Principle
+
+          ## Component Overview
+
+          ```mermaid
+          classDiagram
+              class Application {
+                  +run()
+              }
+              class ConfigurationService {
+                  +get_api_key()
+                  +get_model_name()
+                  +get_supported_extensions()
+              }
+              class AudioFileService {
+                  +scan_audio_files()
+                  +validate_file()
+              }
+              class GeminiAnalyzer {
+                  +analyze_audio()
+              }
+              class ReportGenerator {
+                  +generate_report()
+              }
+              
+              Application --> ConfigurationService
+              Application --> AudioFileService
+              Application --> GeminiAnalyzer
+              Application --> ReportGenerator
+          ```
+
+          ## Service Descriptions
+
+          ### Configuration Service
+          Manages application configuration including API keys and supported file formats.
+
+          ### Audio File Service
+          Handles audio file discovery, validation, and processing.
+
+          ### Gemini Analyzer
+          Interfaces with Google's Gemini AI for audio analysis.
+
+          ### Report Generator
+          Creates formatted analysis reports and summaries.
+          EOF
+
+      - name: Build documentation
+        run: |
+          mkdocs build --strict
+
+      - name: Upload documentation artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation
+          path: site/
+
+  deploy-docs:
+    name: Deploy Documentation
+    runs-on: ubuntu-latest
+    needs: build-docs
+    if: github.ref == 'refs/heads/main'
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download documentation
+        uses: actions/download-artifact@v4
+        with:
+          name: documentation
+          path: site/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: site/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2

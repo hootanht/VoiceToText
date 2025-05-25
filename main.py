@@ -6,16 +6,28 @@ This is a modular and SOLID principles-based voice to text analyzer
 using Google's Gemini AI for Persian and English audio analysis.
 """
 
+import os
+from dotenv import load_dotenv
 from app_factory import ApplicationFactory
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 def main():
     """Main application entry point"""
     
-    # Configuration
-    API_KEY = "AIzaSyD7zLhMbbmZVGMC_Wc96WVi5keyh6_Fbj8"
+    # Configuration from environment variables
+    API_KEY = os.getenv('GEMINI_API_KEY')
     ASSETS_FOLDER = "assets"
     LANGUAGE = "persian"  # or "english"
+    
+    if not API_KEY:
+        print("❌ خطا: متغیر محیطی GEMINI_API_KEY تنظیم نشده است")
+        print("❌ Error: GEMINI_API_KEY environment variable is not set")
+        print("💡 لطفاً فایل .env را ایجاد کرده و کلید API خود را تنظیم کنید")
+        print("💡 Please create a .env file and set your API key")
+        return
     
     print("🎤 برنامه تحلیل صدا به متن با Gemini AI")
     print("📋 نسخه مدولار و پیروی از اصول SOLID")

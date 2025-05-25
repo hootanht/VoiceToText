@@ -2,6 +2,12 @@
 
 An advanced modular AI-powered audio analysis system built with Google Gemini API that converts audio files to text and provides comprehensive analysis reports in Markdown format.
 
+[![Build Status](https://github.com/user/voice-to-text/actions/workflows/ci.yml/badge.svg)](https://github.com/user/voice-to-text/actions/workflows/ci.yml)
+[![Tests](https://github.com/user/voice-to-text/actions/workflows/test.yml/badge.svg)](https://github.com/user/voice-to-text/actions/workflows/test.yml)
+[![Docker](https://github.com/user/voice-to-text/actions/workflows/deploy.yml/badge.svg)](https://github.com/user/voice-to-text/actions/workflows/deploy.yml)
+[![Documentation](https://github.com/user/voice-to-text/actions/workflows/docs.yml/badge.svg)](https://user.github.io/voice-to-text/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ## � Table of Contents
 
 - [🎯 Overview](#-overview)
@@ -11,6 +17,8 @@ An advanced modular AI-powered audio analysis system built with Google Gemini AP
 - [🚀 Installation](#-installation)
 - [🎮 Usage](#-usage)
 - [⚙️ Environment Configuration](#-environment-configuration)
+- [🐳 Docker Deployment](#-docker-deployment)
+- [🔄 CI/CD Pipeline](#-cicd-pipeline)
 - [📁 Project Structure](#-project-structure)
 - [📖 API Documentation](#-api-documentation)
 - [📊 Sample Output](#-sample-output)
@@ -313,7 +321,7 @@ The `ConfigurationService` automatically:
 # The service automatically uses environment variables
 config = ConfigurationService()
 api_key = config.get_api_key()  # Gets from GEMINI_API_KEY env var
-model = config.get_model_name()  # Gets from GEMINI_MODEL_NAME or default
+model = config.get_model_name() # Gets from GEMINI_MODEL_NAME env var or default
 ```
 
 #### Benefits
@@ -322,6 +330,131 @@ model = config.get_model_name()  # Gets from GEMINI_MODEL_NAME or default
 - 🌍 **Environment-specific**: Different keys for dev/prod
 - 🚀 **Easy deployment**: No code changes needed
 - 📝 **Version control safe**: .env files are gitignored
+
+---
+
+## 🐳 Docker Deployment
+
+### Quick Start with Docker
+
+The application includes complete Docker support for easy deployment and development.
+
+#### Option 1: Docker Compose (Recommended)
+
+1. **Create your environment file:**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your API key
+   ```
+
+2. **Run with Docker Compose:**
+   ```bash
+   docker-compose up --build
+   ```
+
+3. **Development mode:**
+   ```bash
+   docker-compose --profile dev up
+   ```
+
+#### Option 2: Docker Build
+
+1. **Build the image:**
+   ```bash
+   docker build -t voice-to-text .
+   ```
+
+2. **Run the container:**
+   ```bash
+   docker run -it --rm \
+     -e GEMINI_API_KEY=your_api_key \
+     -v $(pwd)/assets:/app/assets \
+     -v $(pwd)/results:/app/results \
+     voice-to-text
+   ```
+
+#### Production Deployment
+
+The Docker image includes:
+- ✅ **Health checks** for monitoring
+- ✅ **Volume mounts** for assets and results
+- ✅ **Environment configuration** support
+- ✅ **Multi-stage builds** for optimization
+
+---
+
+## 🔄 CI/CD Pipeline
+
+### GitHub Actions Workflows
+
+The project includes comprehensive CI/CD automation:
+
+#### 🧪 Continuous Integration (`ci.yml`)
+
+- **Code Quality**: Black, Flake8, isort, MyPy
+- **Security Scanning**: Safety, Bandit
+- **Multi-Platform Testing**: Ubuntu, Windows, macOS
+- **Python Versions**: 3.8, 3.9, 3.10, 3.11
+- **Docker Build**: Container testing
+
+```bash
+# Triggered on:
+- Push to main/develop branches
+- Pull requests
+- Manual dispatch
+```
+
+#### 🔍 Comprehensive Testing (`test.yml`)
+
+- **Unit Tests**: pytest with coverage
+- **Integration Tests**: Full application testing
+- **Docker Tests**: Container functionality
+- **Dependency Security**: Vulnerability scanning
+
+#### 📊 Performance Testing (`performance.yml`)
+
+- **Memory Usage Analysis**: Resource monitoring
+- **Performance Benchmarks**: Speed measurements
+- **System Resource Monitoring**: CPU, disk, memory
+- **Daily Scheduled Runs**: Automated monitoring
+
+#### 🚀 Deployment (`deploy.yml`)
+
+- **Docker Registry**: GitHub Container Registry
+- **Security Scanning**: Trivy vulnerability scanner
+- **Multi-Environment**: Staging and Production
+- **Release Automation**: Tagged releases
+
+#### 📚 Documentation (`docs.yml`)
+
+- **Auto-Generated Docs**: API documentation
+- **GitHub Pages**: Hosted documentation
+- **Multi-Format**: Markdown, HTML
+- **Architecture Diagrams**: Mermaid integration
+
+### Release Process
+
+1. **Create a release tag:**
+   ```bash
+   git tag v1.0.0
+   git push origin v1.0.0
+   ```
+
+2. **Automated pipeline:**
+   - ✅ Build and test
+   - ✅ Security scan
+   - ✅ Create Docker image
+   - ✅ Deploy to staging
+   - ✅ Create GitHub release
+   - ✅ Update documentation
+
+### Monitoring and Quality
+
+- 📊 **Code Coverage**: Automated reporting
+- 🔍 **Security Alerts**: Dependency monitoring
+- 📈 **Performance Tracking**: Daily benchmarks
+- 🐛 **Error Tracking**: Comprehensive logging
+- 📋 **Release Notes**: Auto-generated changelogs
 
 ---
 

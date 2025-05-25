@@ -5,17 +5,21 @@ Configuration Service
 
 import os
 from typing import List
+from dotenv import load_dotenv
 from ..interfaces import IConfigurationService
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 class ConfigurationService(IConfigurationService):
     """Manages application configuration following Single Responsibility Principle"""
-    
     def __init__(self, api_key: str = None, model_name: str = None):
         self._api_key = api_key or os.getenv('GEMINI_API_KEY')
         self._model_name = model_name or os.getenv('GEMINI_MODEL_NAME', 'gemini-2.0-flash')
         self._supported_extensions = ['mp3', 'wav', 'aiff', 'aac', 'ogg', 'flac']
-      def get_api_key(self) -> str:
+    
+    def get_api_key(self) -> str:
         """Get the Gemini API key"""
         # Return the configured API key (which already checks environment variables)
         return self._api_key

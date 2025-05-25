@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  voice-to-text:
+    build: .
+    container_name: voice-to-text-analyzer
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GEMINI_MODEL_NAME=${GEMINI_MODEL_NAME:-gemini-2.0-flash}
+    volumes:
+      # Mount assets directory for audio files
+      - ./assets:/app/assets
+      # Mount results directory for output
+      - ./results:/app/results
+      # Mount .env file for configuration
+      - ./.env:/app/.env:ro
+    restart: unless-stopped
+
+  # Development service with volume mounts for live coding
+  voice-to-text-dev:
+    build: .
+    container_name: voice-to-text-dev
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GEMINI_MODEL_NAME=${GEMINI_MODEL_NAME:-gemini-2.0-flash}
+      - PYTHONPATH=/app
+    volumes:
+      - .:/app
+    command: /bin/bash
+    stdin_open: true
+    tty: true
+    profiles:
+      - dev

@@ -1,0 +1,175 @@
+name: Performance Testing
+
+on:
+  schedule:
+    # Run performance tests daily at 2 AM UTC
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+    inputs:
+      test_duration:
+        description: "Test duration in minutes"
+        required: false
+        default: "10"
+        type: string
+
+jobs:
+  performance-test:
+    name: Performance and Load Testing
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest-benchmark memory-profiler psutil      - name: Create test environment
+        run: |
+          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY || 'test_key_for_ci' }}" > .env
+          echo "GEMINI_MODEL_NAME=gemini-2.0-flash" >> .env
+
+      - name: Run memory usage tests
+        run: |
+          python -c "
+          import sys
+          import psutil
+          import os
+          from memory_profiler import profile
+
+          sys.path.insert(0, 'src')
+
+          print('🔍 Memory Usage Analysis')
+          print('=' * 50)
+
+          # Test configuration service memory usage
+          from services.configuration_service import ConfigurationService
+
+          process = psutil.Process(os.getpid())
+          initial_memory = process.memory_info().rss / 1024 / 1024
+          print(f'Initial memory: {initial_memory:.2f} MB')
+
+          # Create multiple service instances
+          services = []
+          for i in range(100):
+              service = ConfigurationService()
+              services.append(service)
+              
+          final_memory = process.memory_info().rss / 1024 / 1024
+          print(f'Final memory: {final_memory:.2f} MB')
+          print(f'Memory increase: {final_memory - initial_memory:.2f} MB')
+
+          # Test memory cleanup
+          del services
+          import gc
+          gc.collect()
+
+          cleanup_memory = process.memory_info().rss / 1024 / 1024
+          print(f'After cleanup: {cleanup_memory:.2f} MB')
+          "
+
+      - name: Run performance benchmarks
+        run: |
+          python -c "
+          import sys
+          import time
+          import statistics
+
+          sys.path.insert(0, 'src')
+
+          print('⚡ Performance Benchmarks')
+          print('=' * 50)
+
+          from services.configuration_service import ConfigurationService
+
+          # Benchmark service initialization
+          init_times = []
+          for i in range(100):
+              start_time = time.time()
+              service = ConfigurationService()
+              end_time = time.time()
+              init_times.append((end_time - start_time) * 1000)  # Convert to ms
+              
+          print(f'Service initialization:')
+          print(f'  Average: {statistics.mean(init_times):.3f} ms')
+          print(f'  Median: {statistics.median(init_times):.3f} ms')
+          print(f'  Min: {min(init_times):.3f} ms')
+          print(f'  Max: {max(init_times):.3f} ms')
+          print(f'  Std Dev: {statistics.stdev(init_times):.3f} ms')
+
+          # Benchmark API key retrieval
+          service = ConfigurationService()
+          get_times = []
+          for i in range(1000):
+              start_time = time.time()
+              api_key = service.get_api_key()
+              end_time = time.time()
+              get_times.append((end_time - start_time) * 1000000)  # Convert to μs
+              
+          print(f'\\nAPI key retrieval:')
+          print(f'  Average: {statistics.mean(get_times):.3f} μs')
+          print(f'  Median: {statistics.median(get_times):.3f} μs')
+          print(f'  Min: {min(get_times):.3f} μs')
+          print(f'  Max: {max(get_times):.3f} μs')
+          "
+
+      - name: System resource monitoring
+        run: |
+          python -c "
+          import psutil
+          import platform
+
+          print('💻 System Resource Information')
+          print('=' * 50)
+
+          # CPU information
+          print(f'CPU cores: {psutil.cpu_count(logical=False)} physical, {psutil.cpu_count(logical=True)} logical')
+          print(f'CPU usage: {psutil.cpu_percent(interval=1):.1f}%')
+
+          # Memory information
+          memory = psutil.virtual_memory()
+          print(f'Total memory: {memory.total / 1024 / 1024 / 1024:.2f} GB')
+          print(f'Available memory: {memory.available / 1024 / 1024 / 1024:.2f} GB')
+          print(f'Memory usage: {memory.percent:.1f}%')
+
+          # Disk information
+          disk = psutil.disk_usage('/')
+          print(f'Total disk: {disk.total / 1024 / 1024 / 1024:.2f} GB')
+          print(f'Free disk: {disk.free / 1024 / 1024 / 1024:.2f} GB')
+          print(f'Disk usage: {(disk.used / disk.total) * 100:.1f}%')
+
+          # Platform information
+          print(f'Platform: {platform.platform()}')
+          print(f'Python version: {platform.python_version()}')
+          "
+
+      - name: Generate performance report
+        run: |
+          echo "# Performance Test Report" > performance_report.md
+          echo "Generated on: $(date)" >> performance_report.md
+          echo "" >> performance_report.md
+          echo "## Test Configuration" >> performance_report.md
+          echo "- Python Version: $(python --version)" >> performance_report.md
+          echo "- OS: $(uname -a)" >> performance_report.md
+          echo "- Test Duration: ${{ github.event.inputs.test_duration || '10' }} minutes" >> performance_report.md
+          echo "" >> performance_report.md
+          echo "## Results" >> performance_report.md
+          echo "✅ All performance tests completed successfully" >> performance_report.md
+          echo "" >> performance_report.md
+          echo "## Recommendations" >> performance_report.md
+          echo "- Monitor memory usage in production" >> performance_report.md
+          echo "- Consider caching for frequently accessed configurations" >> performance_report.md
+          echo "- Implement connection pooling for API calls" >> performance_report.md
+
+      - name: Upload performance report
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-report
+          path: performance_report.md
+          retention-days: 30

@@ -165,7 +165,8 @@ class Python38CompatibilityRunner:
             suite = loader.loadTestsFromModule(test_module)
 
             # Run tests
-            runner = unittest.TextTestRunner(verbosity=0, stream=open(os.devnull, "w"))
+            runner = unittest.TextTestRunner(
+                verbosity=0, stream=open(os.devnull, "w"))
             result = runner.run(suite)
 
             return {
@@ -223,7 +224,8 @@ class Python38CompatibilityRunner:
 
         final_score = 0
         if total_features > 0:
-            final_score += (feature_score / total_features) * 100 * feature_weight
+            final_score += (feature_score / total_features) * \
+                100 * feature_weight
 
         if total_imports > 0:
             final_score += (import_score / total_imports) * 100 * import_weight
@@ -335,7 +337,8 @@ class Python38CompatibilityRunner:
         successful_imports = sum(1 for v in import_stats.values() if v)
         total_imports = len(import_stats)
 
-        print(f"📦 Module Imports: {successful_imports}/{total_imports} successful")
+        print(
+            f"📦 Module Imports: {successful_imports}/{total_imports} successful")
 
         # Test summary
         test_stats = self.results["test_results"]
@@ -344,7 +347,8 @@ class Python38CompatibilityRunner:
             r.get("failures", 0) + r.get("errors", 0) for r in test_stats.values()
         )
 
-        print(f"🧪 Test Results: {total_tests - total_failures}/{total_tests} passed")
+        print(
+            f"🧪 Test Results: {total_tests - total_failures}/{total_tests} passed")
 
         print()
 

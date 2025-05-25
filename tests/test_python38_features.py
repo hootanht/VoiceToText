@@ -107,7 +107,8 @@ class TestPython38PositionalOnlyParams(unittest.TestCase):
             """Process audio with positional-only path parameter"""
             return {"path": str(file_path), "format": format_type, "quality": quality}
 
-        result = process_audio_file("test.mp3", format_type="mp3", quality="medium")
+        result = process_audio_file(
+            "test.mp3", format_type="mp3", quality="medium")
 
         self.assertEqual(result["path"], "test.mp3")
         self.assertEqual(result["format"], "mp3")
@@ -199,7 +200,8 @@ class TestPython38FStringDebugging(unittest.TestCase):
 
     def test_f_string_debugging_syntax(self):
         """Test f-string = debugging (Python 3.8 feature)"""
-        config = ConfigurationService(api_key="debug_key", model_name="debug_model")
+        config = ConfigurationService(
+            api_key="debug_key", model_name="debug_model")
 
         api_key = config.get_api_key()
         model_name = config.get_model_name()
@@ -373,7 +375,8 @@ class TestPython38ErrorHandling(unittest.TestCase):
 
         # Verify exception chaining
         self.assertIsInstance(context.exception.__cause__, ValueError)
-        self.assertIn("Configuration processing failed", str(context.exception))
+        self.assertIn("Configuration processing failed",
+                      str(context.exception))
 
     def test_exception_suppression(self):
         """Test exception suppression with 'from None'"""
@@ -439,7 +442,8 @@ class TestPython38Compatibility(unittest.TestCase):
         if sys.version_info >= (3, 8):
             self.assertTrue(True, "Running on Python 3.8+")
         else:
-            self.skipTest("Python 3.8+ required for full feature compatibility")
+            self.skipTest(
+                "Python 3.8+ required for full feature compatibility")
 
     def test_import_compatibility(self):
         """Test that all required imports work"""
@@ -451,7 +455,8 @@ class TestPython38Compatibility(unittest.TestCase):
         import unittest.mock
 
         # Test our application imports
-        config = ConfigurationService(api_key="import_test", model_name="test_model")
+        config = ConfigurationService(
+            api_key="import_test", model_name="test_model")
         self.assertIsNotNone(config)
 
         file_service = AudioFileService(config)

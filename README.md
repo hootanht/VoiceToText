@@ -198,6 +198,21 @@ pip install -r requirements.txt
 3. Generate API Key
 4. Copy the key
 
+### Step 5: Configure Environment
+```bash
+# Copy the environment template
+cp env.template .env
+
+# Edit .env with your actual API key
+# Add: GEMINI_API_KEY=your_actual_api_key_here
+```
+
+### Step 6: Set up GitHub Secrets (for CI/CD)
+If you're planning to use GitHub Actions:
+- See [GITHUB_SECRETS_SETUP.md](GITHUB_SECRETS_SETUP.md) for detailed instructions
+- Add `GEMINI_API_KEY` and `GEMINI_MODEL_NAME` secrets to your repository
+- This enables automatic testing and integration
+
 ### Step 5: Configure Environment Variables (Recommended)
 
 #### Option A: Using Environment Variables (🔒 Secure)

@@ -49,14 +49,14 @@ jobs:
       - name: Create test environment (Unix)
         if: runner.os != 'Windows'
         run: |
-          echo "GEMINI_API_KEY=test_key_for_ci" > .env
-          echo "GEMINI_MODEL_NAME=gemini-2.0-flash" >> .env
+          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY || 'test_key_for_ci' }}" > .env
+          echo "GEMINI_MODEL_NAME=${{ secrets.GEMINI_MODEL_NAME || 'gemini-2.0-flash' }}" >> .env
 
       - name: Create test environment (Windows)
         if: runner.os == 'Windows'
         run: |
-          echo "GEMINI_API_KEY=test_key_for_ci" | Out-File -FilePath .env -Encoding utf8
-          echo "GEMINI_MODEL_NAME=gemini-2.0-flash" | Out-File -FilePath .env -Append -Encoding utf8
+          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY || 'test_key_for_ci' }}" | Out-File -FilePath .env -Encoding utf8
+          echo "GEMINI_MODEL_NAME=${{ secrets.GEMINI_MODEL_NAME || 'gemini-2.0-flash' }}" | Out-File -FilePath .env -Append -Encoding utf8
 
       - name: Run unit tests with coverage
         run: |
@@ -87,11 +87,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt      
+          pip install -r requirements.txt
       - name: Create test environment
         run: |
-          echo "GEMINI_API_KEY=test_key_for_ci" > .env
-          echo "GEMINI_MODEL_NAME=gemini-2.0-flash" >> .env
+          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY || 'test_key_for_ci' }}" > .env
+          echo "GEMINI_MODEL_NAME=${{ secrets.GEMINI_MODEL_NAME || 'gemini-2.0-flash' }}" >> .env
 
       - name: Test application factory (Unix)
         if: runner.os != 'Windows'
@@ -99,11 +99,11 @@ jobs:
           python -c "
           import sys
           sys.path.insert(0, 'src')
-          
+
           from app_factory import ApplicationFactory
-          
+
           print('Testing ApplicationFactory...')
-          
+
           try:
               app = ApplicationFactory.create_application(
                   api_key='test_key',
@@ -128,25 +128,25 @@ jobs:
           import sys
           import os
           from pathlib import Path
-          
+
           sys.path.insert(0, 'src')
-          
+
           from services.audio_file_service import AudioFileService
           from services.configuration_service import ConfigurationService
-          
+
           print('Testing file processing pipeline...')
-          
+
           # Create test audio directory
           test_dir = Path('test_assets')
           test_dir.mkdir(exist_ok=True)
-          
+
           config = ConfigurationService()
           file_service = AudioFileService(config)
-          
+
           # Test supported extensions check
           extensions = config.get_supported_extensions()
           print(f'✅ Supported extensions: {extensions}')
-          
+
           print('✅ Integration tests completed successfully')
           "
 
@@ -176,8 +176,8 @@ jobs:
         run: |
           # Test that the image runs without errors
           docker run --rm \
-            -e GEMINI_API_KEY=test_key \
-            -e GEMINI_MODEL_NAME=gemini-2.0-flash \
+            -e GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY || 'test_key' }} \
+            -e GEMINI_MODEL_NAME=${{ secrets.GEMINI_MODEL_NAME || 'gemini-2.0-flash' }} \
             voice-to-text:test python -c "
           import sys
           sys.path.insert(0, 'src')
@@ -190,8 +190,8 @@ jobs:
 
       - name: Test Docker Compose
         run: |
-          echo "GEMINI_API_KEY=test_key" > .env
-          echo "GEMINI_MODEL_NAME=gemini-2.0-flash" >> .env
+          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY || 'test_key' }}" > .env
+          echo "GEMINI_MODEL_NAME=${{ secrets.GEMINI_MODEL_NAME || 'gemini-2.0-flash' }}" >> .env
 
           # Test that compose file is valid
           docker-compose config

@@ -13,53 +13,64 @@ from src.models import AnalysisResult
 
 class MarkdownReportGenerator(IReportGenerator):
     """Generates Markdown reports following Single Responsibility Principle"""
-    
+
     def save_analysis_result(self, result: AnalysisResult, output_folder: str) -> str:
         """Save analysis result to a Markdown file"""
         # Ensure output directory exists
         os.makedirs(output_folder, exist_ok=True)
-        
+
         # Create output filename
         base_name = result.audio_file.stem_name
         output_file = os.path.join(output_folder, f"{base_name}_analysis.md")
-        
+
         # Generate Markdown content
         markdown_content = self._generate_analysis_markdown(result)
-        
+
         # Save the file
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(markdown_content)
-        
+
         result.output_file_path = output_file
         print(f"نتیجه ذخیره شد در: {output_file}")
         return output_file
-    
+
     def create_summary_report(self, results: List[AnalysisResult], output_folder: str) -> str:
         """Create a summary report of all results in Markdown format"""
         summary_file = os.path.join(output_folder, "summary_report.md")
-        
+
         # Generate summary content
         markdown_content = self._generate_summary_markdown(results)
-        
+
         # Add English note for empty results
         if not results:
             markdown_content = markdown_content.replace(
                 "هیچ فایلی برای پردازش یافت نشد.",
                 "No files found for processing. / هیچ فایلی برای پردازش یافت نشد."
             )
-        
+
         # Save the summary file
         with open(summary_file, 'w', encoding='utf-8') as f:
             f.write(markdown_content)
-        
+
         print(f"گزارش خلاصه ذخیره شد: {summary_file}")
         return summary_file
-    
+
     def generate_summary_report(self, results: List[AnalysisResult]) -> str:
         """Generate a summary report in Markdown format"""
         markdown_content = self._generate_summary_markdown(results)
         return markdown_content
-    
+
+    def save_report_to_file(self, content: str, filepath: str) -> None:
+        """Save report content to a file"""
+        # Ensure output directory exists
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+
+        # Save the file
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(content)
+
+        print(f"گزارش ذخیره شد در: {filepath}")
+
     def _generate_summary_markdown(self, results: List[AnalysisResult]) -> str:
         """Generate summary markdown content"""
         # Calculate statistics
@@ -68,11 +79,12 @@ class MarkdownReportGenerator(IReportGenerator):
         failed_files = total_files - successful_files
         total_time = sum(r.processing_time for r in results) if results else 0
         avg_time = total_time / total_files if total_files > 0 else 0
-        success_rate = (successful_files / total_files * 100) if total_files > 0 else 0
-        
+        success_rate = (successful_files / total_files *
+                        100) if total_files > 0 else 0
+
         # Generate markdown
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        
+
         markdown = f"""# گزارش خلاصه پردازش فایل‌های صوتی
 
 **تاریخ تولید گزارش:** {now}
@@ -95,17 +107,17 @@ class MarkdownReportGenerator(IReportGenerator):
 
 ---
 
-{"هیچ فایلی برای پردازش یافت نشد." if not results else ""}
+{"No files found for processing. / هیچ فایلی برای پردازش یافت نشد." if not results else ""}
 
 *این گزارش توسط سیستم تحلیل صدا به متن تولید شده است.*
 """
         return markdown
-    
+
     def _generate_analysis_markdown(self, result: AnalysisResult) -> str:
         """Generate analysis markdown content"""
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         success_mark = "✅" if result.success else "❌"
-        
+
         markdown = f"""# گزارش تحلیل فایل صوتی {result.audio_file.file_name}
 
 **تاریخ تحلیل:** {now}

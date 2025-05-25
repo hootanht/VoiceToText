@@ -89,8 +89,8 @@ jobs:
 
       - name: Create test configuration
         run: |
-          echo "GEMINI_API_KEY=test_key_for_ci" >> .env
-          echo "GEMINI_MODEL_NAME=gemini-2.0-flash" >> .env
+          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY || 'test_key_for_ci' }}" >> .env
+          echo "GEMINI_MODEL_NAME=${{ secrets.GEMINI_MODEL_NAME || 'gemini-2.0-flash' }}" >> .env
 
       - name: Run unit tests
         run: |

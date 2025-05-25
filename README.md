@@ -2,13 +2,13 @@
 
 An advanced modular AI-powered audio analysis system built with Google Gemini API that converts audio files to text and provides comprehensive analysis reports in Markdown format.
 
-[![Build Status](https://github.com/user/voice-to-text/actions/workflows/ci.yml/badge.svg)](https://github.com/user/voice-to-text/actions/workflows/ci.yml)
 [![Tests](https://github.com/user/voice-to-text/actions/workflows/test.yml/badge.svg)](https://github.com/user/voice-to-text/actions/workflows/test.yml)
+[![Performance](https://github.com/user/voice-to-text/actions/workflows/performance.yml/badge.svg)](https://github.com/user/voice-to-text/actions/workflows/performance.yml)
 [![Docker](https://github.com/user/voice-to-text/actions/workflows/deploy.yml/badge.svg)](https://github.com/user/voice-to-text/actions/workflows/deploy.yml)
 [![Documentation](https://github.com/user/voice-to-text/actions/workflows/docs.yml/badge.svg)](https://user.github.io/voice-to-text/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## � Table of Contents
+## 📋 Table of Contents
 
 - [🎯 Overview](#-overview)
 - [✨ Features](#-features)
@@ -404,7 +404,7 @@ The Docker image includes:
 
 The project includes comprehensive CI/CD automation:
 
-#### 🧪 Continuous Integration (`ci.yml`)
+#### 🧪 Continuous Integration (`test.yml`)
 
 - **Code Quality**: Black, Flake8, isort, MyPy
 - **Security Scanning**: Safety, Bandit
@@ -824,17 +824,29 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🎯 Roadmap
 
-### Version 2.1 (Planned)
-- [ ] Multi-language support (English, Arabic)
-- [ ] Real-time processing
-- [ ] Web API interface
-- [ ] Docker support
+### ✅ Version 2.0 (Current - Completed Features)
+- [x] ✅ **Multi-language support** - English and Persian implemented
+- [x] ✅ **Docker support** - Full containerization with docker-compose
+- [x] ✅ **CI/CD Pipeline** - Automated testing, performance monitoring, and deployment
+- [x] ✅ **Environment Configuration** - Secure .env support
+- [x] ✅ **Modular Architecture** - SOLID principles implementation
+- [x] ✅ **Comprehensive Testing** - Unit tests, integration tests, performance tests
+- [x] ✅ **Documentation** - Auto-generated docs with GitHub Pages
+- [x] ✅ **Security Scanning** - Vulnerability detection and monitoring
+
+### Version 2.1 (Next - In Progress)
+- [ ] 🔄 **Real-time processing** - Live audio stream processing
+- [ ] 🌐 **Web API interface** - REST API with FastAPI/Flask
+- [ ] 🌍 **Additional language support** - Arabic, Spanish, French
+- [ ] 📱 **Mobile app support** - React Native or Flutter implementation
 
 ### Version 3.0 (Future)
-- [ ] GUI application
-- [ ] Cloud deployment
-- [ ] Advanced analytics
-- [ ] Batch job scheduler
+- [ ] 🖥️ **GUI application** - Desktop interface with modern UI
+- [ ] ☁️ **Cloud deployment** - AWS/Azure/GCP integration
+- [ ] 📊 **Advanced analytics** - Enhanced reporting and insights
+- [ ] ⏰ **Batch job scheduler** - Automated processing workflows
+- [ ] 🎯 **Real-time streaming** - Live conversation analysis
+- [ ] 🔌 **Plugin system** - Extensible architecture for custom analyzers
 
 ---
 

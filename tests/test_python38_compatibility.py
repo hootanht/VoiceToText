@@ -122,7 +122,8 @@ class TestPython38Compatibility(unittest.TestCase):
     def test_dataclass_compatibility(self):
         """Test that our models work with dataclass-like patterns"""
         # Test AudioFile model
-        audio_file = AudioFile("test.mp3", "mp3", 1024)
+        audio_file = AudioFile(
+            file_path="test.mp3", file_name="test.mp3", format="mp3", file_size=1024)
 
         self.assertEqual(audio_file.file_path, "test.mp3")
         self.assertEqual(audio_file.file_extension, "mp3")

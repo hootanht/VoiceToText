@@ -178,7 +178,8 @@ class TestGeminiAnalyzerComprehensive(unittest.TestCase):
             mock_client.GenerativeModel.return_value = mock_model
 
             # Create test audio file
-            test_file = AudioFile("test.mp3", "mp3", 1024)
+            test_file = AudioFile(
+                file_path="test.mp3", file_name="test.mp3", format="mp3", file_size=1024)
 
             # Test analysis
             result = self.analyzer.analyze_audio(test_file, "persian")
@@ -187,7 +188,8 @@ class TestGeminiAnalyzerComprehensive(unittest.TestCase):
             from src.models.analysis_result import AnalysisResult as SrcAnalysisResult
 
             self.assertIsInstance(result, SrcAnalysisResult)
-            self.assertEqual(result.analysis_text, "This is a test transcription")
+            self.assertEqual(result.analysis_text,
+                             "This is a test transcription")
             self.assertTrue(result.success)
             self.assertGreater(result.processing_time, 0)
 
@@ -197,7 +199,8 @@ class TestGeminiAnalyzerComprehensive(unittest.TestCase):
         with patch.object(self.analyzer, "_client") as mock_client:
             mock_client.upload_file.side_effect = Exception("API Error")
 
-            test_file = AudioFile("test.mp3", "mp3", 1024)
+            test_file = AudioFile(
+                file_path="test.mp3", file_name="test.mp3", format="mp3", file_size=1024)
 
             # The analyzer should return a failed result, not raise an exception
             result = self.analyzer.analyze_audio(test_file, "persian")
@@ -267,7 +270,8 @@ class TestPromptProviderComprehensive(unittest.TestCase):
         # Should contain analysis-related keywords
         prompt_lower = prompt.lower()
         analysis_keywords = ["analyze", "analysis", "summary", "content"]
-        self.assertTrue(any(keyword in prompt_lower for keyword in analysis_keywords))
+        self.assertTrue(
+            any(keyword in prompt_lower for keyword in analysis_keywords))
 
     def test_python38_string_formatting(self):
         """Test Python 3.8 string formatting features"""
@@ -290,8 +294,8 @@ class TestReportGeneratorComprehensive(unittest.TestCase):
     def test_generate_analysis_report_complete(self):
         """Test generating complete analysis report"""
         # Create test audio file first
-        # Let __post_init__ set the name
-        audio_file = AudioFile("test.mp3", "", 1024)
+        audio_file = AudioFile(
+            file_path="test.mp3", file_name="test.mp3", format="mp3", file_size=1024)
 
         # Create test analysis result with proper constructor
         result = AnalysisResult(
@@ -305,7 +309,8 @@ class TestReportGeneratorComprehensive(unittest.TestCase):
             # Use the existing method instead
             report = self.generator._generate_analysis_markdown(result)
         else:
-            report = self.generator.generate_analysis_report(result, audio_file)
+            report = self.generator.generate_analysis_report(
+                result, audio_file)
 
         self.assertIsInstance(report, str)
         self.assertGreater(len(report), 0)
@@ -318,7 +323,8 @@ class TestReportGeneratorComprehensive(unittest.TestCase):
         # Create multiple test results
         results = []
         for i in range(3):
-            audio_file = AudioFile(f"test{i+1}.mp3", "mp3", 1024)
+            audio_file = AudioFile(
+                file_path=f"test{i+1}.mp3", file_name=f"test{i+1}.mp3", format="mp3", file_size=1024)
             result = AnalysisResult(
                 audio_file=audio_file,
                 analysis_text=f"Transcription {i+1}",
@@ -363,9 +369,12 @@ class TestReportGeneratorComprehensive(unittest.TestCase):
     def test_python38_walrus_operator_simulation(self):
         """Test simulating walrus operator usage in report generation"""
         audio_files = [
-            AudioFile("test1.mp3", "mp3", 1024),
-            AudioFile("test2.mp3", "mp3", 1024),
-            AudioFile("test3.mp3", "mp3", 1024),
+            AudioFile(file_path="test1.mp3", file_name="test1.mp3",
+                      format="mp3", file_size=1024),
+            AudioFile(file_path="test2.mp3", file_name="test2.mp3",
+                      format="mp3", file_size=1024),
+            AudioFile(file_path="test3.mp3", file_name="test3.mp3",
+                      format="mp3", file_size=1024),
         ]
 
         test_results = [
@@ -423,8 +432,10 @@ class TestPython38IntegrationFeatures(unittest.TestCase):
 
         # Test the function
         test_files = [
-            AudioFile("test1.mp3", "mp3", 1024),
-            AudioFile("test2.wav", "wav", 2048),
+            AudioFile(file_path="test1.mp3", file_name="test1.mp3",
+                      format="mp3", file_size=1024),
+            AudioFile(file_path="test2.wav", file_name="test2.wav",
+                      format="wav", file_size=2048),
         ]
 
         results = process_audio_files(test_files)

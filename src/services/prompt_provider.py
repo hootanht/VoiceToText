@@ -6,12 +6,23 @@ Prompt Provider Service
 from src.interfaces import IPromptProvider
 
 
+class PromptProvider(IPromptProvider):
+    """Default Prompt Provider (alias for PersianPromptProvider)"""
+    
+    def get_analysis_prompt(self) -> str:
+        """Get the analysis prompt"""
+        return PersianPromptProvider().get_analysis_prompt()
+
+
 class PersianPromptProvider(IPromptProvider):
     """Provides Persian prompts for audio analysis"""
     
     def get_analysis_prompt(self) -> str:
         """Get the Persian analysis prompt"""
         return """
+Please analyze and transcribe this audio carefully. Transform the voice to text and tell me what was said in each minute of this conversation.
+At the end, provide a summary of what happened, what the problem was, and whether it was resolved.
+
 ویس رو با دقت به متن تبدیل کن و بگو هر دقیقه چه چیزی گفته شده در این گفت گوی دو طرفه.
 در آخر هم یک گزارش کلی بهم بده که چه اتفاقی افتاده و مشکل چی بوده و آیا حل شده یا نه.
 

@@ -18,6 +18,11 @@ class AudioFile:
     duration: Optional[float] = None
     format: Optional[str] = None
     
+    @property
+    def file_extension(self) -> str:
+        """Get the file extension (for compatibility)"""
+        return self.format.lstrip('.') if self.format else ''
+    
     def __post_init__(self):
         """Initialize additional properties after object creation"""
         if not self.file_name:

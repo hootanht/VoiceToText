@@ -66,8 +66,25 @@ class AudioFileService(IAudioFileService):
         supported_extensions = self._config_service.get_supported_extensions()
         return audio_file.format in supported_extensions
     
-    def get_file_info(self, audio_file: AudioFile) -> dict:
+    def get_files_from_directory(self, directory_path: str) -> List[AudioFile]:
+        """Get audio files from a directory (alias for find_audio_files)"""
+        return self.find_audio_files(directory_path)
+    
+    def validate_file(self, file_path: str) -> bool:
+        """Validate a file by its path"""
+        try:
+            audio_file = self._create_audio_file(file_path)
+            return self.validate_audio_file(audio_file)
+        except Exception:
+            return False
+    
+    def get_file_info(self, file_path_or_audio: str | AudioFile) -> dict:
         """Get detailed information about an audio file"""
+        if isinstance(file_path_or_audio, str):
+            audio_file = self._create_audio_file(file_path_or_audio)
+        else:
+            audio_file = file_path_or_audio
+            
         return {
             'path': audio_file.file_path,
             'name': audio_file.file_name,

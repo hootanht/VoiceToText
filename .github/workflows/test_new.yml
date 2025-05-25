@@ -87,22 +87,23 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt      - name: Create test environment
+          pip install -r requirements.txt
+
+      - name: Create test environment
         run: |
           echo "GEMINI_API_KEY=test_key_for_ci" > .env
           echo "GEMINI_MODEL_NAME=gemini-2.0-flash" >> .env
 
-      - name: Test application factory (Unix)
-        if: runner.os != 'Windows'
+      - name: Test application factory
         run: |
           python -c "
           import sys
           sys.path.insert(0, 'src')
-          
+
           from app_factory import ApplicationFactory
-          
+
           print('Testing ApplicationFactory...')
-          
+
           try:
               app = ApplicationFactory.create_application(
                   api_key='test_key',
@@ -114,46 +115,33 @@ jobs:
               sys.exit(1)
           "
 
-      - name: Test application factory (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          python -c "import sys; sys.path.insert(0, 'src'); from app_factory import ApplicationFactory; print('Testing ApplicationFactory...'); app = ApplicationFactory.create_application(api_key='test_key', language='persian'); print('✅ Application created successfully')"
-
-      - name: Test file processing pipeline (Unix)
-        if: runner.os != 'Windows'
+      - name: Test file processing pipeline
         run: |
           python -c "
           import sys
           import os
           from pathlib import Path
-          
+
           sys.path.insert(0, 'src')
-          
+
           from services.audio_file_service import AudioFileService
           from services.configuration_service import ConfigurationService
-          
+
           print('Testing file processing pipeline...')
-          
+
           # Create test audio directory
           test_dir = Path('test_assets')
           test_dir.mkdir(exist_ok=True)
-          
+
           config = ConfigurationService()
-          file_service = AudioFileService(config)
-          
+          file_service = AudioFileService()
+
           # Test supported extensions check
           extensions = config.get_supported_extensions()
           print(f'✅ Supported extensions: {extensions}')
-          
+
           print('✅ Integration tests completed successfully')
           "
-
-      - name: Test file processing pipeline (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          python -c "import sys; import os; from pathlib import Path; sys.path.insert(0, 'src'); from services.audio_file_service import AudioFileService; from services.configuration_service import ConfigurationService; print('Testing file processing pipeline...'); test_dir = Path('test_assets'); test_dir.mkdir(exist_ok=True); config = ConfigurationService(); file_service = AudioFileService(config); extensions = config.get_supported_extensions(); print(f'✅ Supported extensions: {extensions}'); print('✅ Integration tests completed successfully')"
 
   docker-tests:
     name: Docker Build and Test

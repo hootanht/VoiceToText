@@ -12,9 +12,19 @@ from src.models import AudioFile, AnalysisResult
 class GeminiAnalyzer(IAIAnalyzer):
     """Analyzes audio files using Google's Gemini AI following Dependency Inversion Principle"""
     
-    def __init__(self, config_service: IConfigurationService, prompt_provider: IPromptProvider):
-        self._config_service = config_service
-        self._prompt_provider = prompt_provider
+    def __init__(self, config_service, prompt_provider=None):
+        # Handle backward compatibility - if first arg is string, it's api_key
+        if isinstance(config_service, str):
+            # Legacy constructor: GeminiAnalyzer(api_key, model_name)
+            from src.services.configuration_service import ConfigurationService
+            from src.services.prompt_provider import PromptProvider
+            self._config_service = ConfigurationService(api_key=config_service, model_name=prompt_provider)
+            self._prompt_provider = PromptProvider()
+        else:
+            # New constructor: GeminiAnalyzer(config_service, prompt_provider)
+            self._config_service = config_service
+            self._prompt_provider = prompt_provider
+        
         self._client = None
         self._initialize_client()
     

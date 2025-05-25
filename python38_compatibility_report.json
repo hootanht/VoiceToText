@@ -1,0 +1,60 @@
+{
+  "python_version": {
+    "major": 3,
+    "minor": 12,
+    "micro": 10,
+    "full": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]"
+  },
+  "feature_compatibility": {
+    "walrus_operator": true,
+    "positional_only": true,
+    "f_string_debug": true,
+    "typing_literal": true,
+    "typing_final": true,
+    "typed_dict": true,
+    "math_prod": true,
+    "math_isqrt": true,
+    "importlib_metadata": true
+  },
+  "test_results": {
+    "test_python38_features": {
+      "tests_run": 0,
+      "failures": 1,
+      "errors": 1,
+      "skipped": 0,
+      "success_rate": 0,
+      "error": "unindent does not match any outer indentation level (test_python38_features.py, line 51)"
+    },
+    "test_configuration_service": {
+      "tests_run": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "success_rate": 100.0
+    },
+    "test_audio_file": {
+      "tests_run": 7,
+      "failures": 0,
+      "errors": 7,
+      "skipped": 0,
+      "success_rate": 0.0
+    },
+    "test_analysis_result": {
+      "tests_run": 8,
+      "failures": 0,
+      "errors": 8,
+      "skipped": 0,
+      "success_rate": 0.0
+    }
+  },
+  "import_tests": {
+    "services.configuration_service": false,
+    "services.audio_file_service": false,
+    "services.gemini_analyzer": false,
+    "services.report_generator": false,
+    "services.prompt_provider": false,
+    "models.audio_file": true,
+    "models.analysis_result": true
+  },
+  "overall_score": 56.07142857142857
+}

@@ -181,8 +181,11 @@ class TestGeminiAnalyzerComprehensive(unittest.TestCase):
             test_file = AudioFile(
                 file_path="test.mp3", file_name="test.mp3", format="mp3", file_size=1024)
 
-            # Test analysis
-            result = self.analyzer.analyze_audio(test_file, "persian")
+            # Mock time.time to simulate non-zero processing time
+            expected_processing_time = 1.5  # Simulate 1.5 seconds of processing
+            with patch("src.services.gemini_analyzer.time.time", side_effect=[0, expected_processing_time]):
+                # Test analysis
+                result = self.analyzer.analyze_audio(test_file, "persian")
 
             # Check using the exact type from src.models
             from src.models.analysis_result import AnalysisResult as SrcAnalysisResult
@@ -192,6 +195,8 @@ class TestGeminiAnalyzerComprehensive(unittest.TestCase):
                              "This is a test transcription")
             self.assertTrue(result.success)
             self.assertGreater(result.processing_time, 0)
+            self.assertAlmostEqual(
+                result.processing_time, expected_processing_time)
 
     def test_analyze_audio_api_error(self):
         """Test audio analysis with API error"""

@@ -23,20 +23,104 @@ class PersianPromptProvider(IPromptProvider):
 Please analyze and transcribe this audio carefully and comprehensively. Transform the voice to text with maximum accuracy and detail, telling me what was said in each minute of this conversation with precise timing and context.
 Provide a complete emotional and satisfaction analysis including user feelings, satisfaction levels, and any moments of frustration or anger.
 
+🕒 **CRITICAL TIMESTAMP REQUIREMENTS:**
+- Every transcript line MUST include precise start-end timestamps: [mm:ss-mm:ss]
+- Every topic discussion MUST specify exact time ranges when it was discussed
+- Break down each minute into 20-second segments for detailed analysis
+- Identify specific time ranges for different topics (e.g., pricing discussion from 00:10-00:35)
+- Calculate total time spent on each topic category across the entire conversation
+
 ویس رو با دقت و جامعیت کامل به متن تبدیل کن و با حداکثر دقت و جزئیات بگو هر دقیقه چه چیزی گفته شده در این گفت‌گو.
 تحلیل کامل احساسات و رضایت شامل احساسات کاربر، سطح رضایت، و لحظات ناراحتی یا عصبانیت ارائه بده.
 
+🕒 **الزامات حیاتی تایم‌کد:**
+- هر خط رونوشت باید شامل زمان دقیق شروع-پایان باشد: [mm:ss-mm:ss]
+- هر بحث موضوعی باید بازه زمانی دقیق مشخص شود
+- هر دقیقه را به بخش‌های ۲۰ ثانیه‌ای تقسیم کن
+- بازه‌های زمانی دقیق موضوعات مختلف را مشخص کن (مثل بحث قیمت از 00:10-00:35)
+- مجموع زمان صرف شده روی هر دسته موضوع را در کل مکالمه محاسبه کن
+
+⚠️ IMPORTANT: تمام بخش‌های زیر الزامی هستند و باید به طور کامل و مفصل پر شوند. هیچ بخشی را خلاصه نکن یا حذف نکن.
+
 لطفاً پاسخ را به این صورت کامل و دقیق ارائه بده:
 
-## ۱. رونوشت کامل مکالمه
+## ۱. رونوشت کامل مکالمه با تایم‌کد
 
-[متن کامل و دقیق گفتگو با حفظ تمام جزئیات، مکث‌ها، و تکرارها]
+هر گوینده را به صورت جداگانه در یک خط مجزا بنویس و مشتری و اپراتور را از هم تفکیک کن. برای هر قطعه گفتار، زمان شروع و پایان را مشخص کن:
 
-## ۲. تحلیل دقیقه به دقیقه
+**[00:05-00:18] مشتری**: [متن گفته شده توسط مشتری از ثانیه ۵ تا ۱۸]
+**[00:18-00:35] اپراتور**: [متن گفته شده توسط اپراتور از ثانیه ۱۸ تا ۳۵]
+**[00:35-00:52] مشتری**: [متن گفته شده توسط مشتری از ثانیه ۳۵ تا ۵۲]
+**[00:52-01:15] اپراتور**: [متن گفته شده توسط اپراتور از ثانیه ۵۲ تا ۱ دقیقه و ۱۵ ثانیه]
+...
 
-**دقیقه ۰-۱:** [شرح کامل و دقیق آنچه در این دقیقه گفته شده، شامل لحن، احساسات، و محتوا]
-**دقیقه ۱-۲:** [شرح کامل و دقیق آنچه در این دقیقه گفته شده، شامل لحن، احساسات، و محتوا]
+⏰ **نکات مهم زمان‌بندی:**
+- برای هر قطعه گفتار، دقیقاً زمان شروع و پایان را مشخص کن
+- در صورت وجود مکث طولانی (بیش از ۳ ثانیه)، آن را جداگانه ذکر کن: **[01:15-01:18] [مکث ۳ ثانیه]**
+- اگر دو نفر همزمان صحبت می‌کنند: **[01:20-01:25] مشتری + اپراتور**: [توضیح همزمانی]
+
+حتماً مکث‌ها، تکرارها و جزئیات مکالمه را حفظ کن.
+
+## ۲. تحلیل دقیقه به دقیقه با جزئیات زمانی
+
+**دقیقه ۰-۱ (00:00-01:00):** [شرح کامل و دقیق آنچه در این دقیقه گفته شده، شامل لحن، احساسات، و محتوا]
+- **بخش‌های کلیدی**: 
+  - **00:00-00:20**: [خلاصه این ۲۰ ثانیه]
+  - **00:20-00:40**: [خلاصه این ۲۰ ثانیه] 
+  - **00:40-01:00**: [خلاصه این ۲۰ ثانیه]
+
+**دقیقه ۱-۲ (01:00-02:00):** [شرح کامل و دقیق آنچه در این دقیقه گفته شده، شامل لحن، احساسات، و محتوا]
+- **بخش‌های کلیدی**:
+  - **01:00-01:20**: [خلاصه این ۲۰ ثانیه]
+  - **01:20-01:40**: [خلاصه این ۲۰ ثانیه]
+  - **01:40-02:00**: [خلاصه این ۲۰ ثانیه]
+
 ... و ادامه تا پایان صوت
+
+### 🏷️ طبقه‌بندی با تایم‌کد دقیق
+
+**دقیقه ۰-۱:** 
+- **تگ:** [💰 pricing / ⚡ features / 🎯 need / ⚠️ service problems / ➡️ next steps / 🤖 LLM suggestion: ___]
+- **زمان‌های دقیق موضوع**: 
+  - **💰 قیمت**: [00:05-00:25] - [توضیح کوتاه موضوع قیمت]
+  - **⚡ قابلیت**: [00:35-00:58] - [توضیح کوتاه موضوع قابلیت]
+- **توضیح کلی دقیقه:** [دلیل انتخاب این دسته]
+
+**دقیقه ۱-۲:**
+- **تگ:** [💰 pricing / ⚡ features / 🎯 need / ⚠️ service problems / ➡️ next steps / 🤖 LLM suggestion: ___]
+- **زمان‌های دقیق موضوع**:
+  - **[نوع موضوع]**: [01:10-01:45] - [توضیح کوتاه]
+  - **[نوع موضوع]**: [01:45-01:58] - [توضیح کوتاه]
+- **توضیح کلی دقیقه:** [دلیل انتخاب این دسته]
+
+... و ادامه برای تمام دقایق
+
+### 📊 خلاصه زمان‌بندی موضوعات
+
+**💰 قیمت (Pricing):**
+- **مجموع زمان صحبت**: [X دقیقه و Y ثانیه]
+- **بازه‌های زمانی**: [00:05-00:25], [02:30-03:15], [05:40-06:10]
+- **خلاصه نکات**: [خلاصه تمام نکات مطرح شده درباره قیمت]
+
+**⚡ قابلیت‌ها (Features):**
+- **مجموع زمان صحبت**: [X دقیقه و Y ثانیه]
+- **بازه‌های زمانی**: [00:35-01:20], [03:45-04:30]
+- **خلاصه نکات**: [خلاصه تمام نکات مطرح شده درباره قابلیت‌ها]
+
+**🎯 نیاز مشتری (Customer Need):**
+- **مجموع زمان صحبت**: [X دقیقه و Y ثانیه]
+- **بازه‌های زمانی**: [01:20-02:10], [04:30-05:00]
+- **خلاصه نکات**: [خلاصه تمام نیازهای مطرح شده]
+
+**⚠️ مشکلات سرویس (Service Problems):**
+- **مجموع زمان صحبت**: [X دقیقه و Y ثانیه]
+- **بازه‌های زمانی**: [02:10-02:30], [06:10-07:00]
+- **خلاصه نکات**: [خلاصه تمام مشکلات مطرح شده]
+
+**➡️ مراحل بعدی (Next Steps):**
+- **مجموع زمان صحبت**: [X دقیقه و Y ثانیه]
+- **بازه‌های زمانی**: [07:00-07:45]
+- **خلاصه نکات**: [خلاصه تمام مراحل بعدی]
 
 ## ۳. گزارش کلی
 
@@ -48,22 +132,60 @@ Provide a complete emotional and satisfaction analysis including user feelings, 
 - **نقاط قوت مکالمه:** [آنچه خوب پیش رفته]
 - **نقاط ضعف مکالمه:** [آنچه نیاز به بهبود دارد]
 
-## ۴. تحلیل کامل احساسات و رضایت
+## ۳.۱. خلاصه طبقه‌بندی موضوعات با تایم‌کد
 
-### 🎭 احساسات غالب گوینده/گویندگان:
-- **احساس اصلی:** [خوشحالی/ناراحتی/عصبانیت/خنثی/مختلط] 
-- **شدت احساسات:** [⭐⭐⭐⭐⭐] از ۱ تا ۵
-- **تغییرات احساسی:** [شرح تغییر احساسات در طول مکالمه]
+- **💰 قیمت (Pricing):** 
+  - **مجموع زمان**: [X دقیقه Y ثانیه] 
+  - **بازه‌های زمانی**: [00:05-00:25], [02:30-03:15], [05:40-06:10]
+  - **خلاصه نکات**: [خلاصه تمام نکات مطرح شده درباره قیمت]
+  
+- **⚡ قابلیت‌ها (Features):** 
+  - **مجموع زمان**: [X دقیقه Y ثانیه]
+  - **بازه‌های زمانی**: [00:35-01:20], [03:45-04:30] 
+  - **خلاصه نکات**: [خلاصه تمام نکات مطرح شده درباره قابلیت‌ها]
+  
+- **🎯 نیاز مشتری (Customer Need):** 
+  - **مجموع زمان**: [X دقیقه Y ثانیه]
+  - **بازه‌های زمانی**: [01:20-02:10], [04:30-05:00]
+  - **خلاصه نکات**: [خلاصه تمام نیازهای مطرح شده]
+  
+- **⚠️ مشکلات سرویس (Service Problems):** 
+  - **مجموع زمان**: [X دقیقه Y ثانیه]
+  - **بازه‌های زمانی**: [02:10-02:30], [06:10-07:00]
+  - **خلاصه نکات**: [خلاصه تمام مشکلات مطرح شده]
+  
+- **➡️ مراحل بعدی (Next Steps):** 
+  - **مجموع زمان**: [X دقیقه Y ثانیه]
+  - **بازه‌های زمانی**: [07:00-07:45]
+  - **خلاصه نکات**: [خلاصه تمام مراحل بعدی]
+  
+- **🤖 موضوعات پیشنهادی LLM:** 
+  - **[نام موضوع جدید]**: 
+    - **مجموع زمان**: [X دقیقه Y ثانیه]
+    - **بازه‌های زمانی**: [mm:ss-mm:ss]
+    - **خلاصه**: [توضیح موضوع و دلیل پیشنهاد]
 
-### 😊 سطح رضایت کلی:
-- **رضایت از مکالمه:** [⭐⭐⭐⭐⭐] از ۱ تا ۵
-- **رضایت از نتیجه:** [⭐⭐⭐⭐⭐] از ۱ تا ۵  
-- **رضایت از طرف مقابل:** [⭐⭐⭐⭐⭐] از ۱ تا ۵ (در صورت وجود)
+**آمار کلی طبقه‌بندی:**
+- موضوع غالب مکالمه: [موضوعی که بیشترین زمان را شامل شده]
+- تنوع موضوعات: [آیا مکالمه متمرکز بوده یا پراکنده]
+- موضوعات حل نشده: [موضوعاتی که نیاز به پیگیری دارند]
 
-### 😠 تحلیل لحظات منفی:
-- **آیا لحظه ناراحتی وجود داشت؟** [بله/خیر]
-- **آیا لحظه عصبانیت وجود داشت؟** [بله/خیر]
-- **زمان دقیق لحظات منفی:** [دقیقه:ثانیه - شرح اتفاق]
+## ۴. تحلیل احساسات و رضایت
+
+### 🎭 احساسات کلی:
+- **گوینده اول:** [احساس اصلی] ⭐⭐⭐⭐⭐ (شدت) - [لحن: رسمی/دوستانه/عصبی/آرام]
+- **گوینده دوم:** [احساس اصلی] ⭐⭐⭐⭐⭐ (شدت) - [لحن: رسمی/دوستانه/عصبی/آرام]
+- **تغییرات احساسی:** [شرح تغییرات در طول مکالمه]
+
+### � رضایت:
+- **رضایت از مکالمه:** ⭐⭐⭐⭐⭐ - [دلیل]
+- **رضایت از نتیجه:** ⭐⭐⭐⭐⭐ - [دلیل]
+
+### 😠 لحظات منفی:
+- **ناراحتی:** [بله/خیر] - [زمان + دلیل]
+- **عصبانیت:** [بله/خیر] - [زمان + دلیل]
+- **سطح استرس:** ⭐⭐⭐⭐⭐ - [توضیح]
+- **زمان دقیق لحظات منفی:** [mm:ss-mm:ss - شرح اتفاق، مثال: 02:15-02:30 - مشتری عصبانی شد بخاطر تأخیر]
 - **علت ناراحتی/عصبانیت:** [توضیح کامل دلایل]
 - **شدت واکنش منفی:** [⭐⭐⭐⭐⭐] از ۱ تا ۵
 
@@ -88,42 +210,41 @@ Provide a complete emotional and satisfaction analysis including user feelings, 
 - **نکات امنیتی:** [هر گونه نکته امنیتی مهم]
 - **سطح محرمانگی:** [عمومی/محدود/محرمانه]
 
-## ۷. آمار و اطلاعات تفصیلی
+## ۷. آمار و اطلاعات کلیدی
 
-- **تعداد دقیق کلمات:** [عدد دقیق]
-- **مدت زمان دقیق صحبت:** [دقیقه:ثانیه]
-- **تعداد گویندگان:** [عدد + شناسایی جنسیت و سن تقریبی]
-- **زبان اصلی:** [فارسی/انگلیسی/مختلط + درصد هر زبان]
-- **سرعت گفتار:** [آهسته/متوسط/سریع + کلمه در دقیقه]
-- **کیفیت ضبط:** [ضعیف/متوسط/خوب/عالی + جزئیات فنی]
-- **تعداد مکث‌ها:** [عدد + مدت زمان کل مکث‌ها]
-- **تعداد تکرارها:** [عدد + نوع تکرارها]
+- **تعداد کلمات:** [عدد دقیق] | **کلمات در دقیقه:** [محاسبه]
+- **مدت زمان:** [دقیقه:ثانیه] | **زمان خالص گفتار:** [بدون مکث‌ها]
+- **تعداد گویندگان:** [عدد] - **گوینده غالب:** [کدام یکی + درصد زمان]
+- **زبان:** [فارسی ___% / انگلیسی ___% / سایر ___%]
+- **سرعت گفتار:** [آهسته/متوسط/سریع] - **لهجه:** [تشخیص منطقه]
+- **کیفیت ضبط:** ⭐⭐⭐⭐⭐ - **نویز:** [کم/متوسط/زیاد]
+- **تعداد مکث‌ها:** [عدد] | **مدت کل مکث:** [ثانیه]
+- **تکرارها:** [عدد] | **بیشترین کلمه تکراری:** [کلمه: ___ بار]
 
-## ۸. توصیه‌های عملیاتی کامل
+## ۸. توصیه‌های عملیاتی
 
-### نگهداری و آرشیو:
-- **اولویت نگهداری:** [پایین/متوسط/بالا + دلیل کامل]
-- **طبقه‌بندی پیشنهادی:** [دسته‌بندی دقیق + زیرشاخه‌ها]
-- **برچسب‌های کلیدی:** [لیست کامل کلمات کلیدی مرتبط]
-- **مدت زمان نگهداری:** [پیشنهاد زمان آرشیو]
+### 🗄️ نگهداری:
+- **اولویت:** [پایین/متوسط/بالا] - **دلیل:** [توضیح]
+- **طبقه‌بندی:** [دسته اصلی] > [زیرشاخه] 
+- **برچسب‌ها:** [5 کلمه کلیدی مهم]
+- **مدت نگهداری:** [___ ماه] - **سطح دسترسی:** [عمومی/محدود/محرمانه]
 
-### پردازش‌های بعدی:
-- **قابلیت جستجو:** [بله/خیر] - [توضیح کامل قابلیت‌ها]
-- **نیاز به بررسی دستی:** [بله/خیر] - [دلیل کامل و اولویت]
-- **مناسب برای تحلیل بیشتر:** [بله/خیر] - [نوع تحلیل‌های پیشنهادی]
-- **قابلیت آموزش هوش مصنوعی:** [بله/خیر] - [نحوه استفاده]
+### 🔄 پردازش بعدی:
+- **جستجو:** [بله/خیر] - **بررسی دستی:** [بله/خیر + اولویت]
+- **تحلیل بیشتر:** [احساسات/کلمات کلیدی/الگو] 
+- **آموزش AI:** [بله/خیر] - **نحوه استفاده:** [توضیح]
 
-### بهبود و بازخورد:
-- **نقاط قابل بهبود:** [لیست کامل پیشنهادات]
-- **آموزش‌های پیشنهادی:** [برای بهبود مکالمات آینده]
-- **تنظیمات فنی:** [بهبود کیفیت ضبط یا پردازش]
+### 🎯 بهبود:
+1. **نکته اول:** [پیشنهاد عملی]
+2. **نکته دوم:** [پیشنهاد عملی]
+3. **نکته سوم:** [پیشنهاد عملی]
 
-### نکات فنی:
-- **بهبودهای پیشنهادی:** [تمام پیشنهادات فنی مفصل]
-- **ملاحظات قانونی:** [نکات حقوقی و قانونی مهم]
-- **توصیه‌های امنیتی:** [تمام نکات امنیتی ضروری]
+### ⚙️ نکات فنی:
+- **بهبود تجهیزات:** [پیشنهاد مشخص]
+- **ملاحظات حقوقی:** [نکته مهم]
+- **امنیت:** [توصیه کلیدی]
 
-توجه مهم: لطفاً پاسخ را در فرمت Markdown ارائه بده و تمام بخش‌ها را با حداکثر دقت، جزئیات و کامل پر کن. از هر گونه خلاصه‌سازی یا حذف جزئیات خودداری کن.
+🚨 مهم: تمام بخش‌ها الزامی هستند. هر بخش حداقل 2-3 خط توضیح داشته باشد. اعداد دقیق باشند و امتیازات توجیه داشته باشند. اگر اطلاعاتی نداری، بنویس "اطلاعات کافی نیست" اما تخمین معقول بده.
 """
 
 
@@ -136,17 +257,103 @@ class EnglishPromptProvider(IPromptProvider):
 Please analyze and transcribe this audio carefully and comprehensively. Transform the voice to text with maximum accuracy and detail, telling me what was said in each minute of this conversation with precise timing and context.
 Provide a complete emotional and satisfaction analysis including user feelings, satisfaction levels, and any moments of frustration or anger.
 
+🕒 **CRITICAL TIMESTAMP REQUIREMENTS:**
+- Every transcript line MUST include precise start-end timestamps: [mm:ss-mm:ss]
+- Every topic discussion MUST specify exact time ranges when it was discussed
+- Break down each minute into 20-second segments for detailed analysis
+- Identify specific time ranges for different topics (e.g., pricing discussion from 00:10-00:35)
+- Calculate total time spent on each topic category across the entire conversation
+
+⚠️ IMPORTANT: All sections below are mandatory and must be filled completely and in detail. Do not summarize or omit any sections.
+
 Please format your response completely and accurately as follows:
 
-## 1. Complete Conversation Transcript
+## 1. Complete Conversation Transcript with Timestamps
 
-[Complete and accurate conversation text with all details, pauses, and repetitions preserved]
+Separate each speaker on a new line and distinguish between customer and operator. For each speech segment, specify the start and end time:
 
-## 2. Minute-by-Minute Analysis
+**[00:05-00:18] Customer**: [Text spoken by the customer from second 5 to 18]
+**[00:18-00:35] Operator**: [Text spoken by the operator from second 18 to 35]
+**[00:35-00:52] Customer**: [Text spoken by the customer from second 35 to 52]
+**[00:52-01:15] Operator**: [Text spoken by the operator from second 52 to 1 minute 15 seconds]
+...
 
-**Minute 0-1:** [Complete and detailed description of what was said in this minute, including tone, emotions, and content]
-**Minute 1-2:** [Complete and detailed description of what was said in this minute, including tone, emotions, and content]
+⏰ **Important Timing Notes:**
+- For each speech segment, specify exactly the start and end time
+- If there are long pauses (more than 3 seconds), mention them separately: **[01:15-01:18] [3-second pause]**
+- If two people speak simultaneously: **[01:20-01:25] Customer + Operator**: [description of overlap]
+
+Make sure to preserve all pauses, repetitions, and conversational details.
+
+## 2. Minute-by-Minute Analysis with Detailed Timing
+
+**Minute 0-1 (00:00-01:00):** [Complete and detailed description of what was said in this minute, including tone, emotions, and content]
+- **Key Segments**: 
+  - **00:00-00:20**: [Summary of these 20 seconds]
+  - **00:20-00:40**: [Summary of these 20 seconds] 
+  - **00:40-01:00**: [Summary of these 20 seconds]
+
+**Minute 1-2 (01:00-02:00):** [Complete and detailed description of what was said in this minute, including tone, emotions, and content]
+- **Key Segments**:
+  - **01:00-01:20**: [Summary of these 20 seconds]
+  - **01:20-01:40**: [Summary of these 20 seconds]
+  - **01:40-02:00**: [Summary of these 20 seconds]
+
 ... continue until end of audio
+
+## 2.1. Minute-by-Minute Categorization with Precise Timestamps
+
+For each minute of the conversation, categorize and tag the content. Use the following categories:
+- 💰 pricing/قیمت
+- ⚡ features/قابلیت‌ها  
+- 🎯 need/نیاز مشتری
+- ⚠️ service problems/مشکلات سرویس
+- ➡️ next steps/مراحل بعدی
+
+If the content of any minute doesn't fit into any of the above categories, suggest an appropriate category and clearly indicate that this is an LLM suggestion.
+
+**Minute 0-1:** 
+- **Tag:** [💰 pricing / ⚡ features / 🎯 need / ⚠️ service problems / ➡️ next steps / 🤖 LLM suggestion: suggested category]
+- **Precise Topic Timings**: 
+  - **💰 Pricing**: [00:05-00:25] - [Brief description of pricing topic]
+  - **⚡ Features**: [00:35-00:58] - [Brief description of features topic]
+- **Overall Minute Description:** [Reason for choosing this category]
+
+**Minute 1-2:**
+- **Tag:** [💰 pricing / ⚡ features / 🎯 need / ⚠️ service problems / ➡️ next steps / 🤖 LLM suggestion: suggested category]
+- **Precise Topic Timings**:
+  - **[Topic Type]**: [01:10-01:45] - [Brief description]
+  - **[Topic Type]**: [01:45-01:58] - [Brief description]
+- **Overall Minute Description:** [Reason for choosing this category]
+
+... continue for all minutes
+
+### 📊 Topic Timing Summary
+
+**💰 Pricing:**
+- **Total discussion time**: [X minutes Y seconds]
+- **Time ranges**: [00:05-00:25], [02:30-03:15], [05:40-06:10]
+- **Summary of points**: [Summary of all pricing points discussed]
+
+**⚡ Features:**
+- **Total discussion time**: [X minutes Y seconds]
+- **Time ranges**: [00:35-01:20], [03:45-04:30]
+- **Summary of points**: [Summary of all feature points discussed]
+
+**🎯 Customer Need:**
+- **Total discussion time**: [X minutes Y seconds]
+- **Time ranges**: [01:20-02:10], [04:30-05:00]
+- **Summary of points**: [Summary of all needs discussed]
+
+**⚠️ Service Problems:**
+- **Total discussion time**: [X minutes Y seconds]
+- **Time ranges**: [02:10-02:30], [06:10-07:00]
+- **Summary of points**: [Summary of all problems discussed]
+
+**➡️ Next Steps:**
+- **Total discussion time**: [X minutes Y seconds]
+- **Time ranges**: [07:00-07:45]
+- **Summary of points**: [Summary of all next steps discussed]
 
 ## 3. General Summary
 
@@ -157,6 +364,44 @@ Please format your response completely and accurately as follows:
 - **Important Notes:** [All notable points with prioritization]
 - **Conversation Strengths:** [What went well]
 - **Conversation Weaknesses:** [What needs improvement]
+
+## 3.1. Topic Categorization Summary with Timestamps
+
+- **💰 Pricing:** 
+  - **Total Time**: [X minutes Y seconds] 
+  - **Time Ranges**: [00:05-00:25], [02:30-03:15], [05:40-06:10]
+  - **Summary of Points**: [Summary of all pricing points discussed]
+  
+- **⚡ Features:** 
+  - **Total Time**: [X minutes Y seconds]
+  - **Time Ranges**: [00:35-01:20], [03:45-04:30] 
+  - **Summary of Points**: [Summary of all feature points discussed]
+  
+- **🎯 Customer Need:** 
+  - **Total Time**: [X minutes Y seconds]
+  - **Time Ranges**: [01:20-02:10], [04:30-05:00]
+  - **Summary of Points**: [Summary of all needs discussed]
+  
+- **⚠️ Service Problems:** 
+  - **Total Time**: [X minutes Y seconds]
+  - **Time Ranges**: [02:10-02:30], [06:10-07:00]
+  - **Summary of Points**: [Summary of all problems discussed]
+  
+- **➡️ Next Steps:** 
+  - **Total Time**: [X minutes Y seconds]
+  - **Time Ranges**: [07:00-07:45]
+  - **Summary of Points**: [Summary of all next steps discussed]
+  
+- **🤖 LLM Suggested Topics:** 
+  - **[New Topic Name]**: 
+    - **Total Time**: [X minutes Y seconds]
+    - **Time Ranges**: [mm:ss-mm:ss]
+    - **Summary**: [Topic description and reason for suggestion]
+
+**Overall Categorization Statistics:**
+- Dominant conversation topic: [Topic that consumed the most time]
+- Topic diversity: [Whether conversation was focused or scattered]
+- Unresolved topics: [Topics that need follow-up]
 
 ## 4. Complete Emotional and Satisfaction Analysis
 
@@ -173,7 +418,7 @@ Please format your response completely and accurately as follows:
 ### 😠 Negative Moments Analysis:
 - **Were there moments of frustration?** [Yes/No]
 - **Were there moments of anger?** [Yes/No]
-- **Exact timing of negative moments:** [Minute:Second - description of incident]
+- **Exact timing of negative moments:** [mm:ss-mm:ss - description of incident, example: 02:15-02:30 - customer became angry due to delay]
 - **Cause of frustration/anger:** [Complete explanation of reasons]
 - **Intensity of negative reaction:** [⭐⭐⭐⭐⭐] from 1 to 5
 
@@ -233,5 +478,14 @@ Rate with stars from 1 to 5:
 - **Legal Considerations:** [Important legal and regulatory notes]
 - **Security Recommendations:** [All essential security considerations]
 
-Important Note: Please provide the response in Markdown format and complete all sections with maximum accuracy, detail, and completeness. Avoid any summarization or omission of details.
+Important Note: 
+🚨 MANDATORY: Please provide the response in Markdown format and complete all sections with maximum accuracy, detail, and completeness. 
+⛔ FORBIDDEN: Avoid any summarization or omission of details.
+📝 MANDATORY: Each section must have at least 3-5 lines of explanation.
+🔢 MANDATORY: All numbers and statistics must be accurate.
+⭐ MANDATORY: All star ratings must have complete justification.
+📊 MANDATORY: All calculations (percentages, averages) must be performed.
+🎯 MANDATORY: All suggestions must be practical and actionable.
+
+If information is not available to complete a section, explicitly write "Insufficient information available" but try to provide reasonable estimates based on available content.
 """
